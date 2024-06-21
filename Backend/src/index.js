@@ -1,7 +1,7 @@
 //! Aca se arranca el servidor de express
-
 const app = require('./app');
-require('dotenv').config();
+const dotenv = require('dotenv');
+dotenv.config();
 
 const PORT = process.env.PORT || 3000;
 

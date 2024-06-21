@@ -20,5 +20,10 @@ app.get('/' , (req , res)=>{
     });
 });
 
+//* Rutas de usuarios
+
+app.use('/usuarios', require('./routes/usuarios.routes'));
+
+
 
 module.exports = app;

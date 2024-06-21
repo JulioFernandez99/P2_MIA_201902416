@@ -1,1 +1,2 @@
-npm run dev para levantar el servidor
+# P2_MIA_201902416
+Proyecto2 MIA
