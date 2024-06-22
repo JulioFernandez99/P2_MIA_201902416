@@ -52,7 +52,7 @@ export class RegistroComponent {
             if (data.status ){
               console.log('Usuario registrado');
               alert('Usuario registrado');
-              //this.router.navigate(['/login']);
+              //this.router.navigate(['/saludo']);
             }else{
               console.log('Error al registrar usuario');
             }

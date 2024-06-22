@@ -7,6 +7,7 @@ const cors = require('cors');
 
 const app = express(); //esto crea un objeto del servidor de express
 const routesAdmin = require('./routes/admin.routes');
+const routesLogin = require('./routes/login.routes');
 
 //? =================================================Settings=================================================
 app.use(cors());
@@ -26,6 +27,7 @@ app.get('/' , (req , res)=>{
 //* Rutas de usuarios
 
 app.use('/admin', routesAdmin);
+app.use('/login', routesLogin);
 
 
 
