@@ -15,7 +15,7 @@ router.get('/' , (req , res)=>{
     });
 });
 
-router.get('/registro', [
+router.post('/registro', [
     check('nombre', 'El id es obligatorio').not().isEmpty(),
     check('usuario', 'El usuario es obligatorio').not().isEmpty(),
     check('foto', 'La foto es obligatoria').not().isEmpty(),
