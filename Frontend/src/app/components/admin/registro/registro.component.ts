@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterOutlet, RouterModule } from '@angular/router';
 import { FormGroup, FormControl} from '@angular/forms';
-import { UsuarioService } from '../../../services/usuario.service';
+import { RegistroService } from '../../../services/admin/registro/registro.service';
 
 
 @Component({
@@ -21,7 +21,7 @@ import { UsuarioService } from '../../../services/usuario.service';
 })
 export class RegistroComponent {
   constructor( 
-    private http: UsuarioService,
+    private http: RegistroService,
     private router: Router
   ){}
 
