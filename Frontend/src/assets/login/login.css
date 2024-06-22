@@ -1,10 +1,31 @@
 .gradient-custom {
     /* fallback for old browsers */
     background: #6a11cb;
-    
+
     /* Chrome 10-25, Safari 5.1-6 */
     background: -webkit-linear-gradient(to right, rgba(106, 17, 203, 1), rgba(37, 117, 252, 1));
-    
+
     /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-    background: linear-gradient(to right, rgba(106, 17, 203, 1), rgba(37, 117, 252, 1))
-    }
+    background: linear-gradient(to right, rgba(106, 17, 203, 1), rgba(37, 117, 252, 1));
+}
+
+.vh-100 {
+    min-height: 100vh;
+    height: 100%;
+}
+
+.card {
+    background: rgba(0, 0, 0, 0.7); /* Slight transparency for a more blended look */
+}
+
+.form-outline {
+    margin-bottom: 0.5rem; /* Adjust this value to reduce the space */
+}
+
+.card-body {
+    padding: 1.5rem; /* Adjust this value to reduce the padding inside the card */
+}
+
+.card-body .btn {
+    margin-top: 1rem; /* Optional: Adjust the top margin of the button */
+}
