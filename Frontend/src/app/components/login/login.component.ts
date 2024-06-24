@@ -50,7 +50,7 @@ export class LoginComponent {
             }
           },
           error: (error: any) => {
-            alert('El usuarios no esta registrado');
+            alert('El usuario no esta registrado');
             console.log('El usuarios no esta registrado');
           }
         });

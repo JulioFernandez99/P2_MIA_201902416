@@ -99,17 +99,58 @@ const registroAutos = async (req, res) => {
 const registroRecepcionistas = async (req, res) => {
     
     const { nombre, usuario, foto, correo, password, conf_password} = req.body;
-    res.json({
-        status: true,
-        message: 'Recepcionista registrada correctamente',
-        data: {
-            nombre: nombre,
-            usuario: usuario,
-            foto: foto,
-            correo: correo,
-            password: password,
-            conf_password: conf_password
+    if (password !== conf_password) {
+        return res.json({
+            status: false,
+            message: 'Las contraseñas no coinciden',
+        });
+    };
+
+    const resultData=await getData('Usuarios',{usuario:usuario});
+    if(resultData instanceof Error){
+        return res.json({
+            status:false,
+            error:"Error al obtener datos de la base de datos"
+        });
+    }
+
+    if (resultData!=null){
+        return res.json({
+            status:false,
+            error:"La recepcionista ya existe"
+        });
+    }
+    
+    const result = await insertData('Usuarios', 
+        {   
+            nombre,
+            usuario,
+            foto,
+            correo,
+            password,
+            rol: 'recepcionista'
+            
         }
+    );
+    
+    if (result instanceof Error) {
+        return res.json({
+            status: false,
+            message: 'Error al registrar la recepcionista en la base de datos',
+            data: {
+                nombre: nombre,
+                usuario: usuario,
+                foto: foto,
+                email: email,
+                password: password,
+            }
+        });
+    }
+
+    return res.json({
+        status: true,
+        message: 'La recepcionista se registro correctamente en la base de datos',
+        data: result
     });
 };
 

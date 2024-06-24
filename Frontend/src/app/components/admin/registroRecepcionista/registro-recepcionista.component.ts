@@ -57,6 +57,7 @@ export class RegistroRecepcionistaComponent {
               alert('Recepcionista registrada');
               //this.router.navigate(['/saludo']);
             }else{
+              alert(data.error);
               console.log('Error al registrar Recepcionista');
             }
           },

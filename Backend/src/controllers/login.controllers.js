@@ -17,7 +17,7 @@ const login=async(req,res)=>{
     if(result==null){
         return res.json({
             status:false,
-            error:"El usuario no existe"
+            error:"No hay ningún usuario con este nombre de usuario"
         });
     }
 
