@@ -1,13 +1,12 @@
 import { Injectable,inject } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { environment } from '../../../environments/enviroment';
-
+import { environment } from '../../../../environments/enviroment';
 
 @Injectable({
   providedIn: 'root'
 })
-export class LoginService {
+export class RegistroViajesService {
   http=inject(HttpClient);
   router=inject(Router);
 
@@ -41,16 +40,3 @@ export class LoginService {
   constructor() { }
 }
 
-
-export class AuthServicesLogin{
-  
-  token = '';
-
-  constructor(){}
-
-  isAuth(){
-    return this.token.length > 0;
-  }
-
-
-}

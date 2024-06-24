@@ -15,7 +15,7 @@ router.get('/' , (req , res)=>{
     });
 });
 
-router.post('/registro', [
+router.post('/registro/usuario', [
     check('nombre', 'El id es obligatorio').not().isEmpty(),
     check('usuario', 'El usuario es obligatorio').not().isEmpty(),
     check('foto', 'La foto es obligatoria').not().isEmpty(),
@@ -24,5 +24,14 @@ router.post('/registro', [
     check('conf_password', 'La confirmacion de la contraseña es obligatoria').not().isEmpty(),
     validateAtributes
 ], adminController.registro);
+
+router.post('/registro/viaje', [
+    check('nombreAgencia', 'El id es obligatorio').not().isEmpty(),
+    check('ciudadOrigen', 'El usuario es obligatorio').not().isEmpty(),
+    check('ciudadDestino', 'La foto es obligatoria').not().isEmpty(),
+    check('diasDeVuelo', 'El correo es obligatorio').not().isEmpty(),
+    check('precioDeVuelo', 'La contraseña es obligatoria').not().isEmpty(),
+    validateAtributes
+], adminController.registroViaje);
 
 module.exports = router;

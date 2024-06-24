@@ -32,6 +32,24 @@ const registro = async (req, res) => {
     });
 };
 
+
+const registroViaje = async (req, res) => {
+    
+    const { nombreAgencia, ciudadOrigen, ciudadDestino, diasDeVuelo, precioDeVuelo} = req.body;
+    res.json({
+        status: true,
+        message: 'Viaje registrado correctamente',
+        data: {
+            nombreAgencia: nombreAgencia,
+            ciudadOrigen: ciudadOrigen,
+            ciudadDestino: ciudadDestino,
+            diasDeVuelo: diasDeVuelo,
+            precioDeVuelo: precioDeVuelo
+        }
+    });
+};
+
 module.exports = {
-    registro
+    registro,
+    registroViaje
 };

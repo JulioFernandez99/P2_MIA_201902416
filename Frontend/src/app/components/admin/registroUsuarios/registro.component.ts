@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterOutlet, RouterModule } from '@angular/router';
 import { FormGroup, FormControl} from '@angular/forms';
-import { RegistroService } from '../../../services/admin/registro/registro.service';
+import { RegistroService } from '../../../services/admin/registroUsuarios/registro.service';
 
 
 @Component({
@@ -47,7 +47,7 @@ export class RegistroComponent {
     );
     if (this.form_registro.valid){
       if (this.form_registro.value.password === this.form_registro.value.conf_password){
-        this.http.cosult_post('/admin/registro', this.form_registro.value).subscribe({
+        this.http.cosult_post('/admin/registro/usuario/', this.form_registro.value).subscribe({
           next: (data: any) => {
             if (data.status ){
               console.log('Usuario registrado');
