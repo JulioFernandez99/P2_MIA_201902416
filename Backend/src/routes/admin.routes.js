@@ -34,4 +34,15 @@ router.post('/registro/viaje', [
     validateAtributes
 ], adminController.registroViaje);
 
+router.post('/registro/auto', [
+    check('nombreAgencia', 'El id es obligatorio').not().isEmpty(),
+    check('marca', 'El usuario es obligatorio').not().isEmpty(),
+    check('placa', 'La foto es obligatoria').not().isEmpty(),
+    check('modelo', 'El correo es obligatorio').not().isEmpty(),
+    check('precio', 'La contraseña es obligatoria').not().isEmpty(),
+    check('ubicacion', 'La contraseña es obligatoria').not().isEmpty(),
+    validateAtributes
+], adminController.registroAutos);
+
+
 module.exports = router;

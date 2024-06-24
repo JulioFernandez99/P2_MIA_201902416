@@ -1,1 +1,65 @@
-<p>registro-autos works!</p>
+<main>
+    <section class="vh-100 gradient-custom">
+        <div class="container py-5 h-100">
+            <div class="row d-flex justify-content-center align-items-center h-100">
+                <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+                    <div class="card bg-dark text-white" style="border-radius: 1rem;">
+                        <div class="card-body p-5 text-center">
+                            <div class="mb-md-5 mt-md-4 pb-5">
+                                <h2 class="fw-bold mb-2 text-uppercase">REGISTRO AUTO</h2>
+                                <p class="text-white-50 mb-5">Please enter the data </p>
+
+                                <form [formGroup]="form_registroAuto" (ngSubmit)="registrarAuto()" class="row g-3 needs-validation" novalidate>
+                                    <div class="form-outline form-white mb-4">
+                                        <input formControlName="nombreAgencia" type="text" name="nombreAgencia" class="form-control" id="nombreAgencia" required />
+                                        <label for="nombreAgencia" class="form-label"> Nombre Agencia</label>
+                                        <div class="invalid-feedback">Please, enter your name!</div>
+                                    </div>
+
+                                    <div class="form-outline form-white mb-1">
+                                        <input formControlName="marca" type="text" name="marca" class="form-control" id="marca" required />
+                                        <label for="marca" class="form-label">Marca</label>
+                                        <div class="invalid-feedback">Please, enter your name!</div>
+                                    </div>
+
+                                    <div class="form-outline form-white mb-4">
+                                        <input formControlName="placa" type="text" name="placa" class="form-control" id="placa" required />
+                                        <label for="placa" class="form-label">Placa</label>
+                                        <div class="invalid-feedback">Please, enter your name!</div>
+                                    </div>
+
+                                    <div class="form-outline form-white mb-4">
+                                        <input formControlName="modelo" type="modelo" name="modelo" class="form-control" id="modelo" required />
+                                        <label for="modelo" class="form-label">Modelo</label>
+                                        <div class="invalid-feedback">Please enter your password!</div>
+                                    </div>
+
+                                    <div class="form-outline form-white mb-4">
+                                        <input formControlName="precio" type="text" name="precio" class="form-control" id="precio" required />
+                                        <label for="precio" class="form-label">Precio</label>
+                                        <div class="invalid-feedback">Please enter your password!</div>
+                                    </div>
+
+                                    <div class="form-outline form-white mb-4">
+                                        <input formControlName="ubicacion" type="text" name="ubicacion" class="form-control" id="ubicacion" required />
+                                        <label for="ubicacion" class="form-label">Ciudad en la que se encuentra el vehiculo</label>
+                                        <div class="invalid-feedback">Please enter your password!</div>
+                                    </div>
+
+                                    <div class="col-12">
+                                        <button class="btn btn-outline-light btn-lg px-5" type="submit">Registrar</button>
+                                    </div>
+                                </form>
+                            </div>
+
+                            <div>
+                                <p class="mb-0">Do you want to return to the beginning? <a href="/inicio" class="text-white-50 fw-bold">Home</a></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+

@@ -49,7 +49,25 @@ const registroViaje = async (req, res) => {
     });
 };
 
+const registroAutos = async (req, res) => {
+    
+    const { nombreAgencia, marca, placa, modelo, precio, ubicacion} = req.body;
+    res.json({
+        status: true,
+        message: 'Auto registrado correctamente',
+        data: {
+            nombreAgencia: nombreAgencia,
+            marca: marca,
+            placa: placa,
+            modelo: modelo,
+            precio: precio,
+            ubicacion: ubicacion
+        }
+    });
+};
+
 module.exports = {
     registro,
-    registroViaje
+    registroViaje,
+    registroAutos
 };
