@@ -1,0 +1,35 @@
+========================== Comandos Frontend ==========================
+ng  serve //levanta el front
+
+========================== Comandos backend ==========================
+npm run dev //levanta el backend
+
+
+========================== Comandos ng ==========================
+
+ng g s _nombre --> services
+ng g c _nombre --> componets
+
+========================== Comandos docker ==========================
+sudo usermod -aG docker $USER //agrega el usuario a docker
+newgrp docker //reinicia la terminal
+groups $USER //lista los permisos
+
+
+
+docker-compose up -d //inicia docker
+docker exec -it mongodb mongosh -u root -p M1A2024. //accedo al docker por terminal
+docker ps //lista los docker
+
+use Usuarios //slecciona una tabla
+
+show dbs //lista las db
+
+db.createCollection("Usuarios"); //crea una tabla
+use usuarios //selecciona una tabla
+
+db.Usuarios.insertOne({"nombre":"Julio","apellido":"Fernandez", edad:20}); //inserta 
+
+db.Usuarios.find() //lista los datos
+
+db.Usuarios.find({"edad":{$eq:28}}) //filtra

@@ -41,16 +41,17 @@ export class LoginComponent {
         this.http.consult_post('/login', this.form_login.value).subscribe({
           next: (data: any) => {
             if (data.status ){
-              console.log('Login realizado correctamente');
-              alert('Login realizado correctamente');
+              console.log('Data ->',data);
+              alert('Bienvenido '+data.data.usuario+'!'+' - Tienes permisos de '+data.data.rol);
               //this.router.navigate(['/saludo']);
             }else{
-              console.log('Error al hacer login');
+              alert(data.error);
+              console.log(data.error);
             }
           },
           error: (error: any) => {
-            alert('Error al hacer login');
-            console.log('Error al hacer login');
+            alert('El usuarios no esta registrado');
+            console.log('El usuarios no esta registrado');
           }
         });
       } 

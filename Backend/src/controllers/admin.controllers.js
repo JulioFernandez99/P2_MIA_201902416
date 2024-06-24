@@ -1,12 +1,49 @@
 
+const {insertData} = require('../config/db.mongo');
+const {getData} = require('../config/db.mongo');
+
+
 const registro = async (req, res) => {
-    
+    // se obtienen los datos del body
     const { nombre, usuario ,foto,email ,password, conf_password } = req.body;
     // un res.json de los datos que se reciben
     if (password !== conf_password) {
         return res.json({
             status: false,
             message: 'Las contraseñas no coinciden',
+        });
+    };
+
+    const resultData=await getData('Usuarios',{usuario:usuario});
+    if(resultData instanceof Error){
+        return res.json({
+            status:false,
+            error:"Error al obtener datos de la base de datos"
+        });
+    }
+
+    if (resultData!=null){
+        return res.json({
+            status:false,
+            error:"El usuario ya existe"
+        });
+    }
+    
+    const result = await insertData('Usuarios', 
+        {   
+            nombre,
+            usuario,
+            foto,
+            email,
+            password,
+            rol: 'usuario'
+        }
+    );
+    
+    if (result instanceof Error) {
+        return res.json({
+            status: false,
+            message: 'Error al registrar usuario en la base de datos',
             data: {
                 nombre: nombre,
                 usuario: usuario,
@@ -16,22 +53,15 @@ const registro = async (req, res) => {
                 conf_password: conf_password
             }
         });
-    };
+    }
 
-    res.json({
+    return res.json({
         status: true,
-        message: 'Usuario registrado correctamente',
-        data: {
-            nombre: nombre,
-            usuario: usuario,
-            foto: foto,
-            email: email,
-            password: password,
-            conf_password: conf_password
-        }
+        message: 'Usuario registrado correctamente en la base de datos',
+        data: result
     });
-};
 
+};
 
 const registroViaje = async (req, res) => {
     

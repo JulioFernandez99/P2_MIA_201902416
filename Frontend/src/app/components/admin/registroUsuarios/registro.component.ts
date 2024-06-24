@@ -50,11 +50,12 @@ export class RegistroComponent {
         this.http.cosult_post('/admin/registro/usuario/', this.form_registro.value).subscribe({
           next: (data: any) => {
             if (data.status ){
-              console.log('Usuario registrado');
+              console.log('Usuario registrado',data.data);
               alert('Usuario registrado');
               //this.router.navigate(['/saludo']);
             }else{
-              console.log('Error al registrar usuario');
+              alert(data.error);
+              console.log(data.error);
             }
           },
           error: (error: any) => {
