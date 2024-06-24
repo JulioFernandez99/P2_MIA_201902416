@@ -47,8 +47,56 @@ const getData = async(database, data) => {
     }
 };
 
+const appendToViajes = async (username, newViaje) => {
+    console.log('uri', uri);
+    const mongoClient = new MongoClient(uri);
+    try {
+        await mongoClient.connect();
+        const dbmongo = mongoClient.db('Usuarios');
+        const coleccion = dbmongo.collection('Usuarios');
+        
+        // Busca el usuario y hace append a 'viajes'
+        const result = await coleccion.updateOne(
+            { usuario: username }, // filtro para buscar al usuario
+            { $push: { viajesComprados: newViaje } } // operador para hacer append al array 'viajes'
+        );
+        
+        return result;
+    } catch (error) {
+        console.error('Error appendToViajes: ', error);
+        return error;
+    } finally {
+        await mongoClient.close();
+    }
+};
+
+
+const appendToAutosAlquilados = async (username, newAuto) => {
+    console.log('uri', uri);
+    const mongoClient = new MongoClient(uri);
+    try {
+        await mongoClient.connect();
+        const dbmongo = mongoClient.db('Usuarios');
+        const coleccion = dbmongo.collection('Usuarios');
+        
+        // Busca el usuario y hace append a 'autosAlquilados'
+        const result = await coleccion.updateOne(
+            { usuario: username }, // filtro para buscar al usuario
+            { $push: { autosAlquilados: newAuto } } // operador para hacer append al array 'autosAlquilados'
+        );
+        
+        return result;
+    } catch (error) {
+        console.error('Error appendToAutosAlquilados: ', error);
+        return error;
+    } finally {
+        await mongoClient.close();
+    }
+};
 
 module.exports = {
     insertData,
-    getData
+    getData,
+    appendToViajes,
+    appendToAutosAlquilados
 };

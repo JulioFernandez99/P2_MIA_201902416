@@ -1,6 +1,7 @@
 
 const {insertData} = require('../config/db.mongo');
 const {getData} = require('../config/db.mongo');
+const bcrypt = require('bcrypt');
 
 
 const registro = async (req, res) => {
@@ -28,6 +29,9 @@ const registro = async (req, res) => {
             error:"El usuario ya existe"
         });
     }
+
+    const saltRounds = 10;
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
     
     const result = await insertData('Usuarios', 
         {   
@@ -35,7 +39,9 @@ const registro = async (req, res) => {
             usuario,
             foto,
             email,
-            password,
+            password:hashedPassword,
+            viajesComprados: [],
+            autosAlquilados: [],
             rol: 'usuario'
         }
     );

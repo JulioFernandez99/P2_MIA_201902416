@@ -1,5 +1,6 @@
 
 const {getData} = require('../config/db.mongo');
+const bcrypt = require('bcrypt');
 
 const login=async(req,res)=>{
     const {user,password}=req.body;
@@ -22,10 +23,11 @@ const login=async(req,res)=>{
     }
 
     //Verificar si la contraseña es correcta
-    if(result.password!=password){
+    const match = await bcrypt.compare(password, result.password);
+    if (!match) {
         return res.json({
-            status:false,
-            error:"La contraseña es incorrecta"
+            status: false,
+            error: "La contraseña es incorrecta"
         });
     }
 
