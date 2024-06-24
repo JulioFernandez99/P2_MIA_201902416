@@ -11,6 +11,11 @@ import { DashboardComponent } from './components/admin/dashboard/dashboard.compo
 
 export const routes: Routes = [
     {
+        path: 'admin/dashboard',
+        component: DashboardComponent
+
+    },
+    {
         path: 'admin/registro/usuario',
         component: RegistroComponent
     },
@@ -33,10 +38,6 @@ export const routes: Routes = [
     {
         path: 'login',
         component: LoginComponent
-    },
-    {
-        path: 'dashboard/admin',
-        component: DashboardComponent
-
     }
+    
 ];
