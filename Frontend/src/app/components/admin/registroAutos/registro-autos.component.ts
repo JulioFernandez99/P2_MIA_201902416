@@ -42,6 +42,7 @@ export class RegistroAutosComponent {
         marca: this.form_registroAuto.value.marca,
         placa: this.form_registroAuto.value.placa,
         modelo: this.form_registroAuto.value.modelo,
+        precio: this.form_registroAuto.value.precio,
         ubicacion: this.form_registroAuto.value.ubicacion
       }
     ); if (this.form_registroAuto.valid){

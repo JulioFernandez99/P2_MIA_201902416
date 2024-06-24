@@ -66,8 +66,26 @@ const registroAutos = async (req, res) => {
     });
 };
 
+const registroRecepcionistas = async (req, res) => {
+    
+    const { nombre, usuario, foto, correo, password, conf_password} = req.body;
+    res.json({
+        status: true,
+        message: 'Recepcionista registrada correctamente',
+        data: {
+            nombre: nombre,
+            usuario: usuario,
+            foto: foto,
+            correo: correo,
+            password: password,
+            conf_password: conf_password
+        }
+    });
+};
+
 module.exports = {
     registro,
     registroViaje,
-    registroAutos
+    registroAutos,
+    registroRecepcionistas
 };
