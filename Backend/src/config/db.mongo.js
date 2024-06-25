@@ -31,6 +31,46 @@ const insertData = async(database, data) => {
     }
 };
 
+const insertViajes = async(database, data) => {
+    console.log('uri', uri);
+    const mongoClient = new MongoClient(uri);
+    try {
+        await mongoClient.connect();
+        const dbmongo = mongoClient.db('Viajes');
+        const coleccion = dbmongo.collection(database);
+        const result = await coleccion.insertOne(data);
+        return result;
+    }
+    catch (error) {
+        console.error('Error insertData: ', error);
+        return error;
+    }
+    finally {
+
+        await mongoClient.close();
+    }
+};
+
+const insertAutos = async(database, data) => {
+    console.log('uri', uri);
+    const mongoClient = new MongoClient(uri);
+    try {
+        await mongoClient.connect();
+        const dbmongo = mongoClient.db('Autos');
+        const coleccion = dbmongo.collection(database);
+        const result = await coleccion.insertOne(data);
+        return result;
+    }
+    catch (error) {
+        console.error('Error insertData: ', error);
+        return error;
+    }
+    finally {
+
+        await mongoClient.close();
+    }
+}
+
 // Funcion para obtener datos de la base de datos por atributo usuario
 const getData = async(database, data) => {
     console.log('uri', uri);
@@ -112,10 +152,30 @@ const eliminarUsuario = async (database, data) => {
     }
 }
 
+const getUsuarios = async(database) => {
+    console.log('uri', uri);
+    const mongoClient = new MongoClient(uri);
+    try {
+        await mongoClient.connect();
+        const dbmongo = mongoClient.db('Usuarios');
+        const coleccion = dbmongo.collection(database);
+        const result = await coleccion.find().toArray();
+        return result;
+    } catch (error) {
+        console.error('Error getUsuarios: ', error);
+        return error;
+    } finally {
+        await mongoClient.close();
+    }
+};
+
 module.exports = {
     insertData,
     getData,
     appendToViajes,
     appendToAutosAlquilados,
-    eliminarUsuario
+    eliminarUsuario,
+    getUsuarios,
+    insertViajes,
+    insertAutos
 };

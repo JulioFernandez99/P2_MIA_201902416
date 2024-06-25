@@ -2,7 +2,10 @@
 const {insertData} = require('../config/db.mongo');
 const {getData} = require('../config/db.mongo');
 const {eliminarUsuario} = require('../config/db.mongo');
+const {insertViajes} = require('../config/db.mongo');
+const {insertAutos} = require('../config/db.mongo');
 const bcrypt = require('bcrypt');
+
 
 
 const registro = async (req, res) => {
@@ -75,34 +78,74 @@ const registro = async (req, res) => {
 const registroViaje = async (req, res) => {
     
     const { nombreAgencia, ciudadOrigen, ciudadDestino, diasDeVuelo, precioDeVuelo} = req.body;
-    res.json({
+    
+    const result = await insertViajes('Viajes',
+        {
+            nombreAgencia,
+            ciudadOrigen,
+            ciudadDestino,
+            diasDeVuelo,
+            precioDeVuelo
+        }
+    );
+
+    if (result instanceof Error) {
+        return res.json({
+            status: false,
+            message: 'Error al registrar el viaje en la base de datos',
+            data: {
+                nombreAgencia: nombreAgencia,
+                ciudadOrigen: ciudadOrigen,
+                ciudadDestino: ciudadDestino,
+                diasDeVuelo: diasDeVuelo,
+                precioDeVuelo: precioDeVuelo
+            }
+        });
+    }
+
+    return res.json({
         status: true,
         message: 'Viaje registrado correctamente',
-        data: {
-            nombreAgencia: nombreAgencia,
-            ciudadOrigen: ciudadOrigen,
-            ciudadDestino: ciudadDestino,
-            diasDeVuelo: diasDeVuelo,
-            precioDeVuelo: precioDeVuelo
-        }
+        data: result
     });
 };
 
 const registroAutos = async (req, res) => {
     
     const { nombreAgencia, marca, placa, modelo, precio, ubicacion} = req.body;
-    res.json({
+    const result = await insertAutos('Autos',
+        {
+            nombreAgencia,
+            marca,
+            placa,
+            modelo,
+            precio,
+            ubicacion
+        }
+    );
+
+    if (result instanceof Error) {
+        return res.json({
+            status: false,
+            message: 'Error al registrar el auto en la base de datos',
+            data: {
+                nombreAgencia: nombreAgencia,
+                marca: marca,
+                placa: placa,
+                modelo: modelo,
+                precio: precio,
+                ubicacion: ubicacion
+            }
+        });
+    }
+
+    return res.json({
         status: true,
         message: 'Auto registrado correctamente',
-        data: {
-            nombreAgencia: nombreAgencia,
-            marca: marca,
-            placa: placa,
-            modelo: modelo,
-            precio: precio,
-            ubicacion: ubicacion
-        }
+        data: result
     });
+
+    
 };
 
 const registroRecepcionistas = async (req, res) => {

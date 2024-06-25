@@ -69,4 +69,14 @@ router.post('/deleteUsuario', [
     validateAtributes
 ], adminController.deleteUsuario);
 
+router.post('/registro/viaje', [
+    check('nombreAgencia', 'El id es obligatorio').not().isEmpty(),
+    check('ciudadOrigen', 'El usuario es obligatorio').not().isEmpty(),
+    check('ciudadDestino', 'La foto es obligatoria').not().isEmpty(),
+    check('diasDeVuelo', 'El correo es obligatorio').not().isEmpty(),
+    check('precioDeVuelo', 'La contraseña es obligatoria').not().isEmpty(),
+    validateAtributes
+], adminController.registroViaje);
+
+
 module.exports = router;

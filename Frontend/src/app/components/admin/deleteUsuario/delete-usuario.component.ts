@@ -20,10 +20,11 @@ import Swal from 'sweetalert2';
   styleUrl: './delete-usuario.component.scss'
 })
 export class DeleteUsuarioComponent {
+  
 
   constructor( 
     private http: DeleteUsuarioService,
-    private router: Router
+    private router: Router,
   ){}
 
   form_delete = new FormGroup({
@@ -61,7 +62,7 @@ export class DeleteUsuarioComponent {
                 confirmButtonText: 'Aceptar'
               });
 
-              
+             
               console.log(data.error);
             }
           },
@@ -82,4 +83,3 @@ export class DeleteUsuarioComponent {
 // Validators.required,
 // Validators.minLength(8),
 // Validators.pattern('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9]+$')
-
