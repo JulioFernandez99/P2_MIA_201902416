@@ -1,6 +1,7 @@
 
 const {insertData} = require('../config/db.mongo');
 const {getData} = require('../config/db.mongo');
+const {eliminarUsuario} = require('../config/db.mongo');
 const bcrypt = require('bcrypt');
 
 
@@ -221,6 +222,7 @@ const registroAdmin = async (req, res) => {
         });
     }
 
+    
     return res.json({
         status: true,
         message: 'Usuario registrado correctamente en la base de datos',
@@ -229,10 +231,51 @@ const registroAdmin = async (req, res) => {
 
 };
 
+
+const deleteUsuario = async (req, res) => {
+    const { usuario } = req.body;
+
+   
+
+
+    const resultData=await getData('Usuarios',{usuario:usuario});
+    if(resultData instanceof Error){
+        return res.json({
+            status:false,
+            error:"Error al obtener datos de la base de datos"
+        });
+    }
+
+    if (resultData==null){
+        return res.json({
+            status:false,
+            error:"El usuario no existe"
+        });
+    }
+
+    const result = await eliminarUsuario('Usuarios', { usuario: usuario });
+    if (result instanceof Error) {
+        return res.json({
+            status: false,
+            message: 'Error al eliminar usuario en la base de datos',
+            data: {
+                usuario: usuario
+            }
+        });
+    }
+
+    return res.json({
+        status: true,
+        message: 'Usuario eliminado correctamente en la base de datos',
+        data: result
+    });
+}
+
 module.exports = {
     registro,
     registroViaje,
     registroAutos,
     registroRecepcionistas,
-    registroAdmin
+    registroAdmin,
+    deleteUsuario
 };

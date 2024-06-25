@@ -72,7 +72,6 @@ const appendToViajes = async (username, newViaje) => {
     }
 };
 
-
 const appendToAutosAlquilados = async (username, newAuto) => {
     console.log('uri', uri);
     const mongoClient = new MongoClient(uri);
@@ -96,9 +95,27 @@ const appendToAutosAlquilados = async (username, newAuto) => {
     }
 };
 
+const eliminarUsuario = async (database, data) => {
+    console.log('uri', uri);
+    const mongoClient = new MongoClient(uri);
+    try {
+        await mongoClient.connect();
+        const dbmongo = mongoClient.db('Usuarios');
+        const coleccion = dbmongo.collection(database);
+        const result = await coleccion.deleteOne(data);
+        return result;
+    } catch (error) {
+        console.error('Error eliminarUsuario: ', error);
+        return error;
+    } finally {
+        await mongoClient.close();
+    }
+}
+
 module.exports = {
     insertData,
     getData,
     appendToViajes,
-    appendToAutosAlquilados
+    appendToAutosAlquilados,
+    eliminarUsuario
 };

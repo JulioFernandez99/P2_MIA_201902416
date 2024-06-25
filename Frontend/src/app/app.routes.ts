@@ -7,6 +7,7 @@ import { RegistroRecepcionistaComponent } from './components/admin/registroRecep
 import { InicioComponent } from './components/inicio/inicio.component';
 import { LoginComponent } from './components/login/login.component';
 import { DashboardComponent } from './components/admin/dashboard/dashboard.component';
+import { DeleteUsuarioComponent } from './components/admin/deleteUsuario/delete-usuario.component';
 
 
 
@@ -39,6 +40,10 @@ export const routes: Routes = [
     {
         path: 'admin/registro',
         component:RegistroAdminComponent
+    },
+    {
+        path: 'admin/delete/usuario',
+        component:DeleteUsuarioComponent
     },
     {
         path: 'login',

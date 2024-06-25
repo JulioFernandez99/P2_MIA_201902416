@@ -64,5 +64,9 @@ router.post('/registro/admin', [
     validateAtributes
 ], adminController.registroAdmin);
 
+router.post('/deleteUsuario', [
+    check('usuario', 'El usuario es obligatorio').not().isEmpty(),
+    validateAtributes
+], adminController.deleteUsuario);
 
 module.exports = router;
