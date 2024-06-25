@@ -5,7 +5,7 @@ import { ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterOutlet, RouterModule } from '@angular/router';
 import { FormGroup, FormControl} from '@angular/forms';
 import { RegistroRecepcionistaService } from '../../../services/admin/registroRecepcionista/registro-recepcionista.service';
-
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-registro-recepcionista',
@@ -54,10 +54,22 @@ export class RegistroRecepcionistaComponent {
           next: (data: any) => {
             if (data.status ){
               console.log('Recepcionista registrada');
-              alert('Recepcionista registrada');
+              Swal.fire({
+                title: 'Recepcionista registrada',
+                text: 'Recepcionista registrada',
+                icon: 'success',
+                confirmButtonText: 'Aceptar'
+              });
+              //alert('Recepcionista registrada');
               //this.router.navigate(['/saludo']);
             }else{
-              alert(data.error);
+              Swal.fire({
+                title: 'Error!',
+                text: data.error,
+                icon: 'error',
+                confirmButtonText: 'Aceptar'
+              });
+              //alert(data.error);
               console.log('Error al registrar Recepcionista');
             }
           },

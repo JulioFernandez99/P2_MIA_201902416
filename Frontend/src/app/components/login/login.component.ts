@@ -5,7 +5,7 @@ import { ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterOutlet, RouterModule } from '@angular/router';
 import { FormGroup, FormControl} from '@angular/forms';
 import { LoginService } from '../../services/login/login.service';
-
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-login',
@@ -42,10 +42,22 @@ export class LoginComponent {
           next: (data: any) => {
             if (data.status ){
               console.log('Data ->',data);
-              alert('Bienvenido '+data.data.usuario+'!'+' - Tienes permisos de '+data.data.rol);
+              //alert('Bienvenido '+data.data.usuario+'!'+' - Tienes permisos de '+data.data.rol);
+              Swal.fire({
+                title: 'Bienvenido '+data.data.usuario+'!',
+                text: 'Tienes permisos de '+data.data.rol,
+                icon: 'success',
+                confirmButtonText: 'Aceptar'
+              });
               //this.router.navigate(['/saludo']);
             }else{
-              alert(data.error);
+              Swal.fire({
+                title: 'Error!',
+                text: data.error,
+                icon: 'error',
+                confirmButtonText: 'Aceptar'
+              });
+              //alert(data.error);
               console.log(data.error);
             }
           },

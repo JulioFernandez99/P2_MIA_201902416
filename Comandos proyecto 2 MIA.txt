@@ -33,3 +33,9 @@ db.Usuarios.insertOne({"nombre":"Julio","apellido":"Fernandez", edad:20}); //ins
 db.Usuarios.find() //lista los datos
 
 db.Usuarios.find({"edad":{$eq:28}}) //filtra
+
+
+==================================Correr docker====================================
+docker compose down
+docker-compose build
+sudo docker compose up
