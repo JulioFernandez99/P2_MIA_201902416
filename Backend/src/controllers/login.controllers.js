@@ -23,11 +23,11 @@ const login=async(req,res)=>{
     }
 
     //Verificar si la contraseña es correcta
-    const match = await bcrypt.compare(password, result.password);
-    if (!match) {
+     //Verificar si la contraseña es correcta
+     if(result.password!=password){
         return res.json({
-            status: false,
-            error: "La contraseña es incorrecta"
+            status:false,
+            error:"La contraseña es incorrecta"
         });
     }
 

@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { RegistroComponent } from './components/admin/registroUsuarios/registro.component';
+import { RegistroAdminComponent } from './components/admin/registroAdmin/registro-admin.component';
 import { RegistroViajesComponent } from './components/admin/registroViajes/registro-viajes.component';
 import { RegistroAutosComponent } from './components/admin/registroAutos/registro-autos.component';
 import { RegistroRecepcionistaComponent } from './components/admin/registroRecepcionista/registro-recepcionista.component';
@@ -34,6 +35,10 @@ export const routes: Routes = [
     {
         path: 'inicio',
         component:InicioComponent
+    },
+    {
+        path: 'admin/registro',
+        component:RegistroAdminComponent
     },
     {
         path: 'login',

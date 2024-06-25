@@ -62,7 +62,13 @@ export class LoginComponent {
             }
           },
           error: (error: any) => {
-            alert('El usuario no esta registrado');
+            Swal.fire({
+              title: 'Error!',
+              text: 'El usuario no esta registrado',
+              icon: 'error',
+              confirmButtonText: 'Aceptar'
+            });
+            //alert('El usuario no esta registrado');
             console.log('El usuarios no esta registrado');
           }
         });

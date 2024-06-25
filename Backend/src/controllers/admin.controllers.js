@@ -6,6 +6,8 @@ const bcrypt = require('bcrypt');
 
 const registro = async (req, res) => {
     // se obtienen los datos del body
+    
+
     const { nombre, usuario ,foto,email ,password, conf_password } = req.body;
     // un res.json de los datos que se reciben
     if (password !== conf_password) {
@@ -30,8 +32,8 @@ const registro = async (req, res) => {
         });
     }
 
-    const saltRounds = 10;
-    const hashedPassword = await bcrypt.hash(password, saltRounds);
+    // const saltRounds = 10;
+    // const hashedPassword = bcrypt.hashSync(password, saltRounds);
     
     const result = await insertData('Usuarios', 
         {   
@@ -39,7 +41,7 @@ const registro = async (req, res) => {
             usuario,
             foto,
             email,
-            password:hashedPassword,
+            password:password,
             viajesComprados: [],
             autosAlquilados: [],
             rol: 'usuario'
@@ -160,9 +162,77 @@ const registroRecepcionistas = async (req, res) => {
     });
 };
 
+const registroAdmin = async (req, res) => {
+    // se obtienen los datos del body
+    
+
+    const { nombre, usuario ,foto,email ,password, conf_password } = req.body;
+    // un res.json de los datos que se reciben
+    if (password !== conf_password) {
+        return res.json({
+            status: false,
+            message: 'Las contraseñas no coinciden',
+        });
+    };
+
+    const resultData=await getData('Usuarios',{usuario:usuario});
+    if(resultData instanceof Error){
+        return res.json({
+            status:false,
+            error:"Error al obtener datos de la base de datos"
+        });
+    }
+
+    if (resultData!=null){
+        return res.json({
+            status:false,
+            error:"El usuario ya existe"
+        });
+    }
+
+    // const saltRounds = 10;
+    // const hashedPassword = bcrypt.hashSync(password, saltRounds);
+    
+    const result = await insertData('Usuarios', 
+        {   
+            nombre,
+            usuario,
+            foto,
+            email,
+            password:password,
+            viajesComprados: [],
+            autosAlquilados: [],
+            rol: 'admin'
+        }
+    );
+    
+    if (result instanceof Error) {
+        return res.json({
+            status: false,
+            message: 'Error al registrar usuario en la base de datos',
+            data: {
+                nombre: nombre,
+                usuario: usuario,
+                foto: foto,
+                email: email,
+                password: password,
+                conf_password: conf_password
+            }
+        });
+    }
+
+    return res.json({
+        status: true,
+        message: 'Usuario registrado correctamente en la base de datos',
+        data: result
+    });
+
+};
+
 module.exports = {
     registro,
     registroViaje,
     registroAutos,
-    registroRecepcionistas
+    registroRecepcionistas,
+    registroAdmin
 };

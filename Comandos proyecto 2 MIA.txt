@@ -34,8 +34,12 @@ db.Usuarios.find() //lista los datos
 
 db.Usuarios.find({"edad":{$eq:28}}) //filtra
 
+db.Uusarios.deleteMany({})
+
+
 
 ==================================Correr docker====================================
+npm run build --prod //en el Frontend
 docker compose down
 docker-compose build
 sudo docker compose up

@@ -54,5 +54,15 @@ router.post('/registro/recepcionista', [
     validateAtributes
 ], adminController.registroRecepcionistas);
 
+router.post('/registro/admin', [
+    check('nombre', 'El id es obligatorio').not().isEmpty(),
+    check('usuario', 'El usuario es obligatorio').not().isEmpty(),
+    check('foto', 'La foto es obligatoria').not().isEmpty(),
+    check('email', 'El email es obligatorio').not().isEmpty(),
+    check('password', 'La contraseña es obligatoria').not().isEmpty(),
+    check('conf_password', 'La contraseña es obligatoria').not().isEmpty(),
+    validateAtributes
+], adminController.registroAdmin);
+
 
 module.exports = router;
