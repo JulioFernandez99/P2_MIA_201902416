@@ -10,9 +10,9 @@ const {
 } = process.env;
 
 
-//const uri = `mongodb://${MONGO_USER}:${MONGO_PASSWORD}@${MONGO_HOST}:${MONGO_PORT}`;
+const uri = `mongodb://${MONGO_USER}:${MONGO_PASSWORD}@${MONGO_HOST}:${MONGO_PORT}`;
 
-const uri = `mongodb://root:M1A2024.@localhost:27017`;
+//const uri = `mongodb://root:M1A2024.@localhost:27017`;
 
 const insertData = async(database, data) => {
     console.log('uri', uri);

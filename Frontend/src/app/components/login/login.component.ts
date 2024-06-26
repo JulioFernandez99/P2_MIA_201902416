@@ -49,6 +49,22 @@ export class LoginComponent {
                 icon: 'success',
                 confirmButtonText: 'Aceptar'
               });
+
+              //hasta que se presione el boton aceptar
+
+              if(data.data.rol == 'admin'){
+
+                this.router.navigate(['/admin/dashboard']); 
+
+              }else if(data.data.rol == 'user'){
+
+                this.router.navigate(['/dashboard/admin']);
+
+              }else if(data.data.rol == 'recepcionista'){
+
+                this.router.navigate(['/recepcionista']);
+              }
+
               //this.router.navigate(['/saludo']);
             }else{
               Swal.fire({

@@ -43,3 +43,6 @@ npm run build --prod //en el Frontend
 docker compose down
 docker-compose build
 sudo docker compose up
+
+docker stop mongodb
+docker rm  mongodb
