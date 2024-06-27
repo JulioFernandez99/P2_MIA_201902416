@@ -59,10 +59,25 @@ export class UsuarioComponent implements OnInit { // Implementa OnInit
       }
     });
 
+      //eliminar viajes seleccionados de la lista de viajes
+      for (let i = 0; i < this.viajesSeleccionados.length; i++) {
+        for (let j = 0; j < this.viajes.length; j++) {
+          if (this.viajesSeleccionados[i]._id == this.viajes[j]._id) {
+            this.viajes.splice(j, 1)
+          }
+          
+        }
+          
+        }
 
+    if  (this.viajesSeleccionados.length > 0) {
+      Swal.fire('¡Viajes guardados!', 'Los viajes seleccionados han sido guardados.', 'success');
+    }else{
+      Swal.fire('¡Error!', 'No se han seleccionado viajes.', 'error');
+    }
 
     // Ejemplo de cómo podrías usar SweetAlert para mostrar un mensaje
-    Swal.fire('¡Viajes guardados!', 'Los viajes seleccionados han sido guardados.', 'success');
+    
   }
   
   
@@ -73,8 +88,51 @@ export class UsuarioComponent implements OnInit { // Implementa OnInit
     
     this.http.consult_post('/admin/viajes',null).subscribe({
       next: (data: any) => {
+        //verificar que los viajes de data.viajes no estén en la lista de viajes asignados
+          
+
+        
         this.viajes = data.viajes;
-        console.log('Viajes ->', data.viajes);
+
+        
+        if (this.viajes.length > 0) {
+
+          if (this.data.viajesNoAprobados.length > 0) {
+            for (let i = 0; i < this.data.viajesNoAprobados.length; i++) {
+
+              for (let j = 0; j < this.viajes.length; j++) {
+                if (this.data.viajesNoAprobados[i]._id == this.viajes[j]._id) {
+                  this.viajes.splice(j, 1)
+                }
+
+                
+              }      
+          } 
+        }
+
+
+        if (this.data.viajesComprados.length > 0) {
+          for (let i = 0; i < this.data.viajesComprados.length; i++) {
+
+            for (let j = 0; j < this.viajes.length; j++) {
+              if (this.data.viajesComprados[i]._id == this.viajes[j]._id) {
+                this.viajes.splice(j, 1)
+              }
+
+              
+            }      
+        } 
+      }
+    
+        
+        
+      }else{
+        Swal.fire('¡No hay viajes!', 'No hay viajes disponibles para asignar.', 'warning');
+      }
+        
+
+
+        console.log('Data usuario ->', this.data);
       },
       error: (error: any) => {
         console.log('Error ->', error);
@@ -82,7 +140,9 @@ export class UsuarioComponent implements OnInit { // Implementa OnInit
     });
   
 
-
+    if (this.viajes.length == 0) {
+      Swal.fire('¡No hay viajes!', 'No hay viajes disponibles para asignar.', 'warning');
+    }
 
     console.log('Usuario data:', this.data.usuario);
   }

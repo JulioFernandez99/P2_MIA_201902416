@@ -100,15 +100,59 @@ const appendToViajes = async (username, newViaje) => {
         
         if (newViaje.length > 0) {
             for (let i = 0; i < newViaje.length; i++) {
+
+                //verificar si el viaje ya existe en viajesNoAprobados o viajesComprados,si existe continuar con el siguiente viaje
+                const resultData = await getData('Usuarios', { usuario: username });
+                if (resultData instanceof Error) {
+                    return res.json({
+                        status: false,
+                        message: 'Error al obtener datos de la base de datos',
+                    });
+                }
+                if (resultData == null) {
+                    return res.json({
+                        status: false,
+                        message: 'El usuario no existe',
+                    });
+
+                }
+
+                if (resultData.viajesNoAprobados.length > 0) {
+                    for (let j = 0; j < resultData.viajesNoAprobados.length; j++) {
+                        if (resultData.viajesNoAprobados[j].ciudadOrigen == newViaje[i].ciudadOrigen && resultData.viajesNoAprobados[j].ciudadDestino == newViaje[i].ciudadDestino) {
+                            return res.json({
+                                status: false,
+                                message: 'El viaje ya existe en viajesNoAprobados',
+                            });
+                        }
+                    }
+                }
+
+                if (resultData.viajesComprados.length > 0) {
+                    for (let j = 0; j < resultData.viajesComprados.length; j++) {
+                        if (resultData.viajesComprados[j].ciudadOrigen == newViaje[i].ciudadOrigen && resultData.viajesComprados[j].ciudadDestino == newViaje[i].ciudadDestino) {
+                            return res.json({
+                                status: false,
+                                message: 'El viaje ya existe en viajesComprados',
+                            });
+                        }
+                    }
+                }
+
+
+
+                
+                
+
+                
+
+
+
                 // Busca el usuario y hacer append a 'newViaje'
                 const result = await coleccion.updateOne(
                     { usuario: username }, // filtro para buscar al usuario
-                    { $push: { viajesComprados: newViaje[i] } } // operador para hacer append al array 'viajes'
-                );
-    
-                
-    
-                
+                    { $push: { viajesNoAprobados: newViaje[i] } } // operador para hacer append al array 'viajes'
+                );  
     
             }
             //cambiar el atributo a viajesPendientes a true

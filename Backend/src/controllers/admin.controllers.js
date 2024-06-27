@@ -47,6 +47,7 @@ const registro = async (req, res) => {
             password:password,
             viajesComprados: [],
             autosAlquilados: [],
+            viajesNoAprobados:[],
             rol: 'usuario',
             viajesPendientes:false
         }
@@ -85,7 +86,8 @@ const registroViaje = async (req, res) => {
             ciudadOrigen,
             ciudadDestino,
             diasDeVuelo,
-            precioDeVuelo
+            precioDeVuelo,
+            aprobado: false
         }
     );
 
