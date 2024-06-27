@@ -136,7 +136,7 @@ export class UsuarioComponent implements OnInit { // Implementa OnInit
         
 
 
-        console.log('Data usuario ->', this.data);
+        //console.log('Data usuario ->', this.data);
         }
         catch (error) {
           console.log('Error ->', error);

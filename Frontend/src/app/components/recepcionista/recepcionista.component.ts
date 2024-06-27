@@ -25,6 +25,7 @@ export class RecepcionistaComponent implements OnInit {
   data: any;
   us: any;
   usuarios: any[] = [];
+  seleccionados: any[] = []; // Array para almacenar los elementos seleccionados
 
   constructor(
     private http: RecepcionistaService,
@@ -38,26 +39,16 @@ export class RecepcionistaComponent implements OnInit {
     this.http.consult_get('/admin/getUsers').subscribe({
       next: (data: any) => {
         this.us = data;
-        console.log('Us ->', this.us);
-
         if (this.us && this.us.usuarios) { // Verificación adicional
           for (let i = 0; i < this.us.usuarios.length; i++) {
             let usuario = this.us.usuarios[i].usuario;
-            //console.log('Nombre ->', usuario);
-
-            let tam = this.us.usuarios[i].viajesNoAprobados?.length || 0; // Opcional chaining
-            //console.log('Tam ->', tam);
+            let tam = this.us.usuarios[i].viajesNoAprobados?.length || 0;
 
             for (let j = 0; j < tam; j++) {
-              console.log('Viaje ->', this.us.usuarios[i].viajesNoAprobados[j]);
               this.us.usuarios[i].viajesNoAprobados[j]['usuario'] = usuario;
               this.usuarios.push(this.us.usuarios[i].viajesNoAprobados[j]);
             }
-            // Almacena los usuarios en el array 'usuarios'
-            //console.log('Usuarios ->', this.usuarios);
           }
-
-          console.log('Usuarios *->', this.usuarios);
         } else {
           console.error('La respuesta no contiene usuarios', this.us);
         }
@@ -66,5 +57,22 @@ export class RecepcionistaComponent implements OnInit {
         console.log('Error ->', error);
       }
     });
+  }
+
+  onCheckboxChange(event: any, usuario: any) {
+    if (event.target.checked) {
+      this.seleccionados.push(usuario);
+    } else {
+      const index = this.seleccionados.indexOf(usuario);
+      if (index > -1) {
+        this.seleccionados.splice(index, 1);
+      }
+    }
+    console.log('Seleccionados ->', this.seleccionados);
+  }
+
+  guardarSeleccion() {
+    console.log('Usuarios seleccionados:', this.seleccionados);
+    // Aquí puedes agregar la lógica para manejar los usuarios seleccionados, por ejemplo, enviar los datos al servidor
   }
 }

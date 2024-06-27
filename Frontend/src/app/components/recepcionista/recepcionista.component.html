@@ -31,14 +31,14 @@
                         <td class="text-center align-middle">{{ usuario.diasDeVuelo }}</td>
                         <td class="text-center align-middle">{{ usuario.precioDeVuelo }}</td>
                         <td class="text-center align-middle">
-                          <input type="checkbox" class="form-check-input" >
+                          <input type="checkbox" class="form-check-input" (change)="onCheckboxChange($event, usuario)">
                         </td>
                       </tr>
                     </tbody>
                   </table>
                 </div>
 
-                <button class="btn btn-danger" >Guardar seleccionados</button>
+                <button class="btn btn-danger" (click)="guardarSeleccion()">Guardar seleccionados</button>
 
               </div>
             </div>
