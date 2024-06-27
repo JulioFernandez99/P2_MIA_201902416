@@ -8,7 +8,7 @@ import { InicioComponent } from './components/inicio/inicio.component';
 import { LoginComponent } from './components/login/login.component';
 import { DashboardComponent } from './components/admin/dashboard/dashboard.component';
 import { DeleteUsuarioComponent } from './components/admin/deleteUsuario/delete-usuario.component';
-
+import { UsuarioComponent } from './components/usuario/usuario.component';
 
 
 export const routes: Routes = [
@@ -48,6 +48,10 @@ export const routes: Routes = [
     {
         path: 'login',
         component: LoginComponent
-    }
+    },
+    {
+        path: 'dashboard/usuario',
+        component: UsuarioComponent
+    },
     
 ];

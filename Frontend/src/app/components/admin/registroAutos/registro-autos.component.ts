@@ -5,7 +5,7 @@ import { ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterOutlet, RouterModule } from '@angular/router';
 import { FormGroup, FormControl} from '@angular/forms';
 import { RegistroAutosService } from '../../../services/admin/registroAutos/registro-autos.service';
-
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-registro-autos',
@@ -50,9 +50,23 @@ export class RegistroAutosComponent {
         next: (data: any) => {
           if (data.status ){
             console.log('Registro de viaje realizado correctamente');
-            alert('Registro de viaje realizado correctamente');
+            //alert('Registro de viaje realizado correctamente');
+            Swal.fire({
+              title: 'Registro de auto realizado correctamente',
+              text: 'Registro de auto realizado correctamente',
+              icon: 'success',
+              confirmButtonText: 'Aceptar'
+            });
+
             //this.router.navigate(['/saludo']);
           }else{
+            Swal.fire({
+              title: 'Error al hacer registro de auto',
+              text: data.error,
+              icon: 'error',
+              confirmButtonText: 'Aceptar'
+            });
+
             console.log('Error al hacer login');
           }
         },

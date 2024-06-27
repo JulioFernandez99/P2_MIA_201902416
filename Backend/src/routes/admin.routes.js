@@ -79,4 +79,9 @@ router.post('/registro/viaje', [
 ], adminController.registroViaje);
 
 
+router.post('/viajes', adminController.viajes);
+
+router.post('/asignar/viajes', adminController.appendViajes);
+
+
 module.exports = router;

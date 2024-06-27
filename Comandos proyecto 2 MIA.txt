@@ -46,3 +46,6 @@ sudo docker compose up
 
 docker stop mongodb
 docker rm  mongodb
+
+
+sudo fuser -k 3000/tcp

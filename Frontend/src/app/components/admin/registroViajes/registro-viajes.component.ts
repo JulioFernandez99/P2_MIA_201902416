@@ -5,7 +5,7 @@ import { ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterOutlet, RouterModule } from '@angular/router';
 import { FormGroup, FormControl} from '@angular/forms';
 import { RegistroViajesService } from '../../../services/admin/registroViajes/registro-viajes.service';
-
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-registro-viajes',
@@ -49,10 +49,24 @@ export class RegistroViajesComponent {
         next: (data: any) => {
           if (data.status ){
             console.log('Registro de viaje realizado correctamente');
-            alert('Registro de viaje realizado correctamente');
+            //alert('Registro de viaje realizado correctamente');
+            Swal.fire({
+              title: 'Registro de viaje realizado correctamente',
+              text: 'Registro de viaje realizado correctamente',
+              icon: 'success',
+              confirmButtonText: 'Aceptar'
+            });
+
             //this.router.navigate(['/saludo']);
           }else{
-            console.log('Error al hacer login');
+            Swal.fire({
+              title: 'Error al hacer registro de viaje',
+              text: data.error,
+              icon: 'error',
+              confirmButtonText: 'Aceptar'
+            });
+
+            //console.log('Error al hacer login');
           }
         },
         error: (error: any) => {

@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterOutlet, RouterModule } from '@angular/router';
 import { FormGroup, FormControl} from '@angular/forms';
+import { UsuarioDataService } from '../../services/usuarioData/usuario-data.service';
 import { LoginService } from '../../services/login/login.service';
 import Swal from 'sweetalert2';
 
@@ -22,7 +23,8 @@ import Swal from 'sweetalert2';
 export class LoginComponent {
   constructor( 
     private http: LoginService,
-    private router: Router
+    private router: Router,
+    private usuarioDataService: UsuarioDataService // Inyecta el servicio
   ){}
 
   form_login = new FormGroup({
@@ -51,14 +53,14 @@ export class LoginComponent {
               });
 
               //hasta que se presione el boton aceptar
-
+              this.usuarioDataService.setUsuarioData(data.data); // Guarda el usuario en el servicio
               if(data.data.rol == 'admin'){
 
                 this.router.navigate(['/admin/dashboard']); 
 
-              }else if(data.data.rol == 'user'){
+              }else if(data.data.rol == 'usuario'){
 
-                this.router.navigate(['/dashboard/admin']);
+                this.router.navigate(['/dashboard/usuario']);
 
               }else if(data.data.rol == 'recepcionista'){
 

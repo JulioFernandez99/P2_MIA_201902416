@@ -10,9 +10,9 @@ const {
 } = process.env;
 
 
-const uri = `mongodb://${MONGO_USER}:${MONGO_PASSWORD}@${MONGO_HOST}:${MONGO_PORT}`;
+//const uri = `mongodb://${MONGO_USER}:${MONGO_PASSWORD}@${MONGO_HOST}:${MONGO_PORT}`;
 
-//const uri = `mongodb://root:M1A2024.@localhost:27017`;
+const uri = `mongodb://root:M1A2024.@localhost:27017`;
 
 const insertData = async(database, data) => {
     console.log('uri', uri);
@@ -96,14 +96,30 @@ const appendToViajes = async (username, newViaje) => {
         await mongoClient.connect();
         const dbmongo = mongoClient.db('Usuarios');
         const coleccion = dbmongo.collection('Usuarios');
+        result2 = null;
         
-        // Busca el usuario y hace append a 'viajes'
-        const result = await coleccion.updateOne(
-            { usuario: username }, // filtro para buscar al usuario
-            { $push: { viajesComprados: newViaje } } // operador para hacer append al array 'viajes'
-        );
+        if (newViaje.length > 0) {
+            for (let i = 0; i < newViaje.length; i++) {
+                // Busca el usuario y hacer append a 'newViaje'
+                const result = await coleccion.updateOne(
+                    { usuario: username }, // filtro para buscar al usuario
+                    { $push: { viajesComprados: newViaje[i] } } // operador para hacer append al array 'viajes'
+                );
+    
+                
+    
+                
+    
+            }
+            //cambiar el atributo a viajesPendientes a true
+            const result2 = await coleccion.updateOne(
+                { usuario: username }, // filtro para buscar al usuario
+                { $set: { viajesPendientes: true } } // operador para hacer append al array 'viajes'
+            );
+        }
         
-        return result;
+        
+        return result2;
     } catch (error) {
         console.error('Error appendToViajes: ', error);
         return error;
@@ -169,6 +185,72 @@ const getUsuarios = async(database) => {
     }
 };
 
+const getViajes = async(database) => {
+    console.log('uri', uri);
+    const mongoClient = new MongoClient(uri);
+    try {
+        await mongoClient.connect();
+        const dbmongo = mongoClient.db('Viajes');
+        const coleccion = dbmongo.collection(database);
+        const result = await coleccion.find().toArray();
+        return result;
+    } catch (error) {
+        console.error('Error getViajes: ', error);
+        return error;
+    } finally {
+        await mongoClient.close();
+    }
+};
+
+// una funcion que verifique el atributo viajesPendientes y si es true, que liste los viajes de viajesComprados y que permita eliminarlo segun ciudadOrigen y ciudadDestino
+const eliminarViaje = async (username, ciudadOrigen, ciudadDestino) => {
+    console.log('uri', uri);
+    const mongoClient = new MongoClient(uri);
+    try {
+        await mongoClient.connect();
+        const dbmongo = mongoClient.db('Usuarios');
+        const coleccion = dbmongo.collection('Usuarios');
+        
+        // Busca el usuario y obtener los viajes comprados y eliminar el viaje segun ciudadOrigen y ciudadDestino
+        const result = await coleccion.updateOne(
+            { usuario: username }, // filtro para buscar al usuario
+            { $pull: { viajesComprados: { ciudadOrigen: ciudadOrigen, ciudadDestino: ciudadDestino } } } // operador para eliminar un elemento del array 'viajesComprados'
+        );
+        
+        return result;
+    } catch (error) {
+        console.error('Error eliminarViaje: ', error);
+        return error;
+    } finally {
+        await mongoClient.close();
+    }
+}
+
+const eliminarAuto = async (username, marca, modelo) => {
+
+    console.log('uri', uri);
+    const mongoClient = new MongoClient(uri);
+    try {
+        await mongoClient.connect();
+        const dbmongo = mongoClient.db('Usuarios');
+        const coleccion = dbmongo.collection('Usuarios');
+        
+        // Busca el usuario y obtener los autos alquilados y eliminar el auto segun marca y modelo
+        const result = await coleccion.updateOne(
+            { usuario: username }, // filtro para buscar al usuario
+            { $pull: { autosAlquilados: { marca: marca, modelo: modelo } } } // operador para eliminar un elemento del array 'autosAlquilados'
+        );
+        
+        return result;
+    } catch (error) {
+        console.error('Error eliminarAuto: ', error);
+        return error;
+    } finally {
+        await mongoClient.close();
+    }
+
+}
+
 module.exports = {
     insertData,
     getData,
@@ -177,5 +259,6 @@ module.exports = {
     eliminarUsuario,
     getUsuarios,
     insertViajes,
-    insertAutos
+    insertAutos,
+    getViajes
 };

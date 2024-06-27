@@ -1,12 +1,11 @@
 
 const {insertData} = require('../config/db.mongo');
 const {getData} = require('../config/db.mongo');
+const {getViajes} = require('../config/db.mongo');
 const {eliminarUsuario} = require('../config/db.mongo');
 const {insertViajes} = require('../config/db.mongo');
 const {insertAutos} = require('../config/db.mongo');
-const bcrypt = require('bcrypt');
-
-
+const {appendToViajes} = require('../config/db.mongo');
 
 const registro = async (req, res) => {
     // se obtienen los datos del body
@@ -48,7 +47,8 @@ const registro = async (req, res) => {
             password:password,
             viajesComprados: [],
             autosAlquilados: [],
-            rol: 'usuario'
+            rol: 'usuario',
+            viajesPendientes:false
         }
     );
     
@@ -314,11 +314,51 @@ const deleteUsuario = async (req, res) => {
     });
 }
 
+const viajes = async (req, res) => {
+    const result = await getViajes('Viajes');
+    if (result instanceof Error) {
+        return res.json({
+            status: false,
+            message: 'Error al obtener los viajes de la base de datos',
+        });
+    }
+
+    return res.json({
+        status: true,
+        message: 'Viajes obtenidos correctamente',
+        viajes: result
+    });
+
+
+}
+
+
+const appendViajes = async (req, res) => {
+    const { usuario, viajes } = req.body;
+    const result = await appendToViajes(usuario, viajes);
+    if (result instanceof Error) {
+        return res.json({
+            status: false,
+            message: 'Error al agregar el viaje al usuario en la base de datos',
+        });
+    }
+
+    return res.json({
+        status: true,
+        message: 'Viaje agregado correctamente al usuario'
+    });
+};
+    
+
+
+
 module.exports = {
     registro,
     registroViaje,
     registroAutos,
     registroRecepcionistas,
     registroAdmin,
-    deleteUsuario
+    deleteUsuario,
+    viajes,
+    appendViajes
 };
