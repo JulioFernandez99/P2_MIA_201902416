@@ -6,6 +6,7 @@ const {eliminarUsuario} = require('../config/db.mongo');
 const {insertViajes} = require('../config/db.mongo');
 const {insertAutos} = require('../config/db.mongo');
 const {appendToViajes} = require('../config/db.mongo');
+const {getUsuarios} = require('../config/db.mongo');
 
 const registro = async (req, res) => {
     // se obtienen los datos del body
@@ -351,7 +352,22 @@ const appendViajes = async (req, res) => {
     });
 };
     
+const getUsers = async (req, res) => {
+    const result = await getUsuarios('Usuarios');
+    if (result instanceof Error) {
+        return res.json({
+            status: false,
+            message: 'Error al obtener los usuarios de la base de datos',
+        });
+    }
 
+    return res.json({
+        status: true,
+        message: 'Usuarios obtenidos correctamente',
+        usuarios: result
+    });
+
+}
 
 
 module.exports = {
@@ -362,5 +378,6 @@ module.exports = {
     registroAdmin,
     deleteUsuario,
     viajes,
-    appendViajes
+    appendViajes,
+    getUsers
 };

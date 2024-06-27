@@ -10,6 +10,7 @@ import { DashboardComponent } from './components/admin/dashboard/dashboard.compo
 import { DeleteUsuarioComponent } from './components/admin/deleteUsuario/delete-usuario.component';
 import { UsuarioComponent } from './components/usuario/usuario.component';
 
+import { RecepcionistaComponent } from './components/recepcionista/recepcionista.component';
 
 export const routes: Routes = [
     {
@@ -52,6 +53,10 @@ export const routes: Routes = [
     {
         path: 'dashboard/usuario',
         component: UsuarioComponent
+    },
+    {
+        path: 'dashboard/recepcionista',
+        component: RecepcionistaComponent
     },
     
 ];

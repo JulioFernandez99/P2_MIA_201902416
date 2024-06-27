@@ -88,19 +88,23 @@ export class UsuarioComponent implements OnInit { // Implementa OnInit
     
     this.http.consult_post('/admin/viajes',null).subscribe({
       next: (data: any) => {
+
+        try {
+          
         //verificar que los viajes de data.viajes no estén en la lista de viajes asignados
           
 
         
         this.viajes = data.viajes;
+        let tam = this.viajes?.length || 0;
 
         
-        if (this.viajes.length > 0) {
+        if (this.viajes?.length||0 > 0) {
 
-          if (this.data.viajesNoAprobados.length > 0) {
+          if (this.data.viajesNoAprobados?.length || 0 > 0) {
             for (let i = 0; i < this.data.viajesNoAprobados.length; i++) {
 
-              for (let j = 0; j < this.viajes.length; j++) {
+              for (let j = 0; j < this.viajes?.length || 0; j++) {
                 if (this.data.viajesNoAprobados[i]._id == this.viajes[j]._id) {
                   this.viajes.splice(j, 1)
                 }
@@ -111,10 +115,10 @@ export class UsuarioComponent implements OnInit { // Implementa OnInit
         }
 
 
-        if (this.data.viajesComprados.length > 0) {
-          for (let i = 0; i < this.data.viajesComprados.length; i++) {
+        if (this.data.viajesComprados?.length || 0 > 0) {
+          for (let i = 0; i < this.data.viajesComprados?.length || 0; i++) {
 
-            for (let j = 0; j < this.viajes.length; j++) {
+            for (let j = 0; j < this.viajes?.length || 0; j++) {
               if (this.data.viajesComprados[i]._id == this.viajes[j]._id) {
                 this.viajes.splice(j, 1)
               }
@@ -133,6 +137,12 @@ export class UsuarioComponent implements OnInit { // Implementa OnInit
 
 
         console.log('Data usuario ->', this.data);
+        }
+        catch (error) {
+          console.log('Error ->', error);
+        }
+
+
       },
       error: (error: any) => {
         console.log('Error ->', error);

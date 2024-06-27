@@ -64,7 +64,7 @@ export class LoginComponent {
 
               }else if(data.data.rol == 'recepcionista'){
 
-                this.router.navigate(['/recepcionista']);
+                this.router.navigate(['/dashboard/recepcionista']);
               }
 
               //this.router.navigate(['/saludo']);
