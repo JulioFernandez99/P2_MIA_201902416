@@ -83,6 +83,8 @@ router.post('/viajes', adminController.viajes);
 
 router.post('/asignar/viajes', adminController.appendViajes);
 
+router.post('/aceptar/viajes', adminController.confirmaViajes);
+
 router.get('/getUsers', adminController.getUsers);
 
 module.exports = router;

@@ -295,6 +295,56 @@ const eliminarAuto = async (username, marca, modelo) => {
 
 }
 
+
+const aceptarViajes = async (viajes) => {
+    //recorrer el array de viajes y hacer append a viajesComprados y eliminar de viajesNoAprobados
+    console.log('uri', uri);
+    const mongoClient = new MongoClient(uri);
+    console.log('Viajes DB --> ', viajes);
+    try{
+
+        //recorrer el array de viajes y hacer append a viajesComprados y eliminar de viajesNoAprobados
+        for(let i=0;i<viajes?.length || 0;i++){
+            let username = viajes[i].usuario;
+            let viaje = viajes[i];
+
+            
+
+
+            await mongoClient.connect();
+            const dbmongo = mongoClient.db('Usuarios');
+            const coleccion = dbmongo.collection('Usuarios');
+            const result = await coleccion.updateOne(
+                { usuario: username }, // filtro para buscar al usuario
+                { $push: { viajesComprados: viaje } } // operador para hacer append al array 'viajesComprados'
+            );
+
+            const result2 = await coleccion.updateOne(
+                { usuario: username }, // filtro para buscar al usuario
+                { $pull: { viajesNoAprobados: { ciudadOrigen: viaje.ciudadOrigen, ciudadDestino: viaje.ciudadDestino } } } // operador para eliminar un elemento del array 'viajesNoAprobados'
+            );
+            
+
+
+
+        }
+        
+        return {
+            status: true,
+            message: 'Viajes aceptados correctamente'
+        }
+
+    }catch(error){
+        console.error('Error aceptarViajes: ', error);
+        return error;
+    }
+
+
+}
+
+
+
+
 module.exports = {
     insertData,
     getData,
@@ -304,5 +354,6 @@ module.exports = {
     getUsuarios,
     insertViajes,
     insertAutos,
-    getViajes
+    getViajes,
+    aceptarViajes
 };

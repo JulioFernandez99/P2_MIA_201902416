@@ -72,7 +72,38 @@ export class RecepcionistaComponent implements OnInit {
   }
 
   guardarSeleccion() {
-    console.log('Usuarios seleccionados:', this.seleccionados);
+    
+
+    let json = {
+      usuarios: this.seleccionados
+    }
+
+    this.http.consult_post('/admin/aceptar/viajes', json).subscribe({
+
+      next: (data: any) => {
+        console.log('Data ->', data);
+        if (data.status == true) {
+          Swal.fire('¡Éxito!', 'Los viajes han sido aceptados.', 'success');
+          
+        } else {
+          Swal.fire('¡Error!', 'No se pudieron aceptar los viajes.', 'error');
+        }
+      },
+      error: (error: any) => {
+        console.log('Error ->', error);
+      }
+    });
+
+    //eliminar los viajes seleccionados de la lista de viajes
+    for (let i = 0; i < this.seleccionados.length; i++) {
+      for (let j = 0; j < this.usuarios.length; j++) {
+        if (this.seleccionados[i]._id == this.usuarios[j]._id) {
+          this.usuarios.splice(j, 1);
+        }
+      }
+    }
+
+    console.log('Usuarios seleccionados:', json);
     // Aquí puedes agregar la lógica para manejar los usuarios seleccionados, por ejemplo, enviar los datos al servidor
   }
 }
