@@ -9,6 +9,8 @@ const {appendToViajes} = require('../config/db.mongo');
 const {getUsuarios} = require('../config/db.mongo');
 const {aceptarViajes} = require('../config/db.mongo');
 
+const {getAutos} = require('../config/db.mongo');
+
 const registro = async (req, res) => {
     // se obtienen los datos del body
     
@@ -337,6 +339,24 @@ const viajes = async (req, res) => {
 
 }
 
+const autos = async (req, res) => {
+
+    const result = await getAutos('Autos');
+    if (result instanceof Error) {
+        return res.json({
+            status: false,
+            message: 'Error al obtener los autos de la base de datos',
+        });
+    }
+
+    return res.json({
+        status: true,
+        message: 'Autos obtenidos correctamente',
+        autos: result
+    });
+
+}
+
 
 const appendViajes = async (req, res) => {
     const { usuario, viajes } = req.body;
@@ -400,5 +420,6 @@ module.exports = {
     viajes,
     appendViajes,
     getUsers,
-    confirmaViajes
+    confirmaViajes,
+    autos
 };

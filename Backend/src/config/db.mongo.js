@@ -246,6 +246,24 @@ const getViajes = async(database) => {
     }
 };
 
+const getAutos = async(database) => {
+    console.log('uri', uri);
+    const mongoClient = new MongoClient(uri);
+    try {
+        await mongoClient.connect();
+        const dbmongo = mongoClient.db('Autos');
+        const coleccion = dbmongo.collection(database);
+        const result = await coleccion.find().toArray();
+        return result;
+    } catch (error) {
+        console.error('Error getAutos: ', error);
+        return error;
+    } finally {
+        await mongoClient.close();
+    }
+};
+
+
 // una funcion que verifique el atributo viajesPendientes y si es true, que liste los viajes de viajesComprados y que permita eliminarlo segun ciudadOrigen y ciudadDestino
 const eliminarViaje = async (username, ciudadOrigen, ciudadDestino) => {
     console.log('uri', uri);
@@ -355,5 +373,6 @@ module.exports = {
     insertViajes,
     insertAutos,
     getViajes,
-    aceptarViajes
+    aceptarViajes,
+    getAutos,
 };

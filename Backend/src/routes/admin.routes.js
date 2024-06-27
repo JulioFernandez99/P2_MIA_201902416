@@ -81,6 +81,8 @@ router.post('/registro/viaje', [
 
 router.post('/viajes', adminController.viajes);
 
+router.post('/autos', adminController.autos);
+
 router.post('/asignar/viajes', adminController.appendViajes);
 
 router.post('/aceptar/viajes', adminController.confirmaViajes);

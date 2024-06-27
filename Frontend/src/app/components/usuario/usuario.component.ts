@@ -19,11 +19,66 @@ import Swal from 'sweetalert2';
   templateUrl: './usuario.component.html',
   styleUrl: './usuario.component.scss'
 })
+
+
 export class UsuarioComponent implements OnInit { // Implementa OnInit
+
+  isAuto: boolean = false;
   data: any;
-  viajes: any;
-  viajesSeleccionados: any[] = [];
-  infoUsuario: any;
+  autos: any;
+
+  cambiarAViajes() {
+    this.isAuto = false; 
+  }
+
+  cambiarAAutos() {
+    this.isAuto = true; 
+    this.data = this.usuarioDataService.getUsuarioData(); // Obtenemos los datos del usuario
+
+    //consulta a mi base de datos mongo Autos
+    this.http.consult_post('/admin/autos',null).subscribe({
+      next: (data: any) => {
+        
+        try {
+            
+            //verificar que los autos de data.autos no estén en la lista de autos asignados
+            this.autos = data.autos;
+            let tam = this.autos?.length || 0;
+  
+            if (this.autos?.length||0 > 0) {
+  
+              if (this.data.autos?.length || 0 > 0) {
+                for (let i = 0; i < this.data.autos.length; i++) {
+  
+                  for (let j = 0; j < this.autos?.length || 0; j++) {
+                    if (this.data.autos[i]._id == this.autos[j]._id) {
+                      this.autos.splice(j, 1)
+                    }
+  
+                    
+                  }      
+              } 
+            }
+            
+            }else{
+              Swal.fire('¡No hay autos!', 'No hay autos disponibles para asignar.', 'warning');
+            }
+            
+  
+            //console.log('Data usuario ->', this.data);
+          }
+          catch (error) {
+            console.log('Error ->', error);
+          }
+
+      }
+
+    });
+
+    
+  }
+
+ 
 
   constructor(
     private http: UsuarioDataService,
@@ -31,7 +86,7 @@ export class UsuarioComponent implements OnInit { // Implementa OnInit
     private usuarioDataService: UsuarioDataService
   ) {}
 
-  toggleSeleccion(index: number) {
+  toggleSeleccionAutos(index: number) {
     if (this.viajesSeleccionados.includes(this.viajes[index])) {
       // Si ya está seleccionado, lo eliminamos del array de seleccionados
       this.viajesSeleccionados = this.viajesSeleccionados.filter(viaje => viaje !== this.viajes[index]);
@@ -41,7 +96,71 @@ export class UsuarioComponent implements OnInit { // Implementa OnInit
     }
   }
 
-  guardarSeleccionados() {
+  guardarSeleccionadosAutos() {
+    // Aquí puedes realizar la lógica para guardar los viajes seleccionados en tu base de datos
+    console.log('Viajes seleccionados:', this.viajesSeleccionados);
+
+    this.infoUsuario ={
+      usuario: this.data.usuario,
+      viajes: this.viajesSeleccionados
+    }
+
+    this.http.consult_post('/admin/asignar/viajes',this.infoUsuario).subscribe({
+      next: (data: any) => {
+        console.log('Viajes asignados ->', data);
+      },
+      error: (error: any) => {
+        console.log('Error ->', error);
+      }
+    });
+
+      //eliminar viajes seleccionados de la lista de viajes
+      for (let i = 0; i < this.viajesSeleccionados.length; i++) {
+        for (let j = 0; j < this.viajes.length; j++) {
+          if (this.viajesSeleccionados[i]._id == this.viajes[j]._id) {
+            this.viajes.splice(j, 1)
+          }
+          
+        }
+          
+        }
+
+    if  (this.viajesSeleccionados.length > 0) {
+      Swal.fire('¡Viajes guardados!', 'Los viajes seleccionados han sido guardados.', 'success');
+    }else{
+      Swal.fire('¡Error!', 'No se han seleccionado viajes.', 'error');
+    }
+
+    // Ejemplo de cómo podrías usar SweetAlert para mostrar un mensaje
+    
+  }
+
+
+
+
+
+
+
+
+
+  //=====================================Seccion de Viajes=====================================
+
+  
+  viajes: any;
+  viajesSeleccionados: any[] = [];
+  infoUsuario: any;
+
+  toggleSeleccionViajes(index: number) {
+    if (this.viajesSeleccionados.includes(this.viajes[index])) {
+      // Si ya está seleccionado, lo eliminamos del array de seleccionados
+      this.viajesSeleccionados = this.viajesSeleccionados.filter(viaje => viaje !== this.viajes[index]);
+    } else {
+      // Si no está seleccionado, lo agregamos al array de seleccionados
+      this.viajesSeleccionados.push(this.viajes[index]);
+    }
+  }
+
+  guardarSeleccionadosViajes() {
     // Aquí puedes realizar la lógica para guardar los viajes seleccionados en tu base de datos
     console.log('Viajes seleccionados:', this.viajesSeleccionados);
 
@@ -80,10 +199,10 @@ export class UsuarioComponent implements OnInit { // Implementa OnInit
     
   }
   
-  
-
   ngOnInit() {
-    this.data = this.usuarioDataService.getUsuarioData();
+
+    if (!this.isAuto){
+    this.data = this.usuarioDataService.getUsuarioData(); // Obtenemos los datos del usuario
     //consulta a mi base de datos mongo Viajes
     
     this.http.consult_post('/admin/viajes',null).subscribe({
@@ -150,11 +269,13 @@ export class UsuarioComponent implements OnInit { // Implementa OnInit
     });
   
 
-    if (this.viajes.length == 0) {
+    if (this.viajes?.length || 0 == 0) {
       Swal.fire('¡No hay viajes!', 'No hay viajes disponibles para asignar.', 'warning');
     }
 
     console.log('Usuario data:', this.data.usuario);
+    }
+  
   }
 }
 

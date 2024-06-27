@@ -26,6 +26,8 @@ export class RecepcionistaComponent implements OnInit {
   us: any;
   usuarios: any[] = [];
   seleccionados: any[] = []; // Array para almacenar los elementos seleccionados
+  
+
 
   constructor(
     private http: RecepcionistaService,
