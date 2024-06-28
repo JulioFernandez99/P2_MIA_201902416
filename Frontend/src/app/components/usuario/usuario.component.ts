@@ -47,11 +47,11 @@ export class UsuarioComponent implements OnInit { // Implementa OnInit
   
             if (this.autos?.length||0 > 0) {
   
-              if (this.data.autos?.length || 0 > 0) {
-                for (let i = 0; i < this.data.autos.length; i++) {
+              if (this.data.autosNoAprobados?.length || 0 > 0) {
+                for (let i = 0; i < this.data.autosNoAprobados.length; i++) {
   
                   for (let j = 0; j < this.autos?.length || 0; j++) {
-                    if (this.data.autos[i]._id == this.autos[j]._id) {
+                    if (this.data.autosNoAprobados[i]._id == this.autos[j]._id) {
                       this.autos.splice(j, 1)
                     }
   
@@ -59,6 +59,22 @@ export class UsuarioComponent implements OnInit { // Implementa OnInit
                   }      
               } 
             }
+
+
+            if (this.data.autosComprados?.length || 0 > 0) {
+              for (let i = 0; i < this.data.autosComprados.length; i++) {
+  
+                for (let j = 0; j < this.autos?.length || 0; j++) {
+                  if (this.data.autosComprados[i]._id == this.autos[j]._id) {
+                    this.autos.splice(j, 1)
+                  }
+  
+                  
+                }      
+            }
+          }
+
+
             
             }else{
               Swal.fire('¡No hay autos!', 'No hay autos disponibles para asignar.', 'warning');
@@ -278,4 +294,3 @@ export class UsuarioComponent implements OnInit { // Implementa OnInit
   
   }
 }
-

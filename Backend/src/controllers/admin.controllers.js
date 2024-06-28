@@ -50,7 +50,7 @@ const registro = async (req, res) => {
             email,
             password:password,
             viajesComprados: [],
-            autosAlquilados: [],
+            autosComprados: [],
             viajesNoAprobados:[],
             autosNoAprobados:[],
             rol: 'usuario',
