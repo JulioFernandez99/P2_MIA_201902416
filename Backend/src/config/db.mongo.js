@@ -429,7 +429,45 @@ const aceptarViajes = async (viajes) => {
 }
 
 
+const aceptarAutos = async (autos) => {
+    //recorrer el array de autos y hacer append a autosComprados y eliminar de autosNoAprobados
+    console.log('uri', uri);
+    const mongoClient = new MongoClient(uri);
+    console.log('Autos DB --> ', autos);
+    try{
 
+        //recorrer el array de autos y hacer append a autosComprados y eliminar de autosNoAprobados
+        for(let i=0;i<autos?.length || 0;i++){
+            let username = autos[i].usuario;
+            let auto = autos[i];
+
+
+            await mongoClient.connect();
+            const dbmongo = mongoClient.db('Usuarios');
+            const coleccion = dbmongo.collection('Usuarios');
+            const result = await coleccion.updateOne(
+                { usuario: username }, // filtro para buscar al usuario
+                { $push: { autosComprados: auto } } // operador para hacer append al array 'autosComprados'
+            );
+
+            const result2 = await coleccion.updateOne(
+                { usuario: username }, // filtro para buscar al usuario
+                { $pull: { autosNoAprobados: { marca: auto.marca, modelo: auto.modelo } } } // operador para eliminar un elemento del array 'autosNoAprobados'
+            );
+
+        }
+
+        return {
+            status: true,
+            message: 'Autos aceptados correctamente'
+        }
+
+    }
+    catch(error){
+        console.error('Error aceptarAutos: ', error);
+        return error;
+    }
+}
 
 module.exports = {
     insertData,
@@ -443,5 +481,6 @@ module.exports = {
     getViajes,
     aceptarViajes,
     getAutos,
-    appendToAutos
+    appendToAutos,
+    aceptarAutos
 };

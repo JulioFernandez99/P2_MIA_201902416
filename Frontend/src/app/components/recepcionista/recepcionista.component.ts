@@ -21,12 +21,96 @@ import { RecepcionistaService } from '../../services/recepcionista/recepcionista
   styleUrls: ['./recepcionista.component.scss'] // Corrección aquí
 })
 export class RecepcionistaComponent implements OnInit {
+  isAuto: boolean = false;
+
 
   data: any;
   us: any;
   usuarios: any[] = [];
   seleccionados: any[] = []; // Array para almacenar los elementos seleccionados
+  autosSeleccionados: any[] = []; // Array para almacenar los autos seleccionados
+  autos: any[] = [];
+
   
+  cambiarAViajes() {
+    this.isAuto = false;
+  }
+
+  cambiarAAutos() {
+    this.isAuto= true;
+
+    //hacer lo mismo que en ngOnInit pero con autos
+    this.http.consult_get('/admin/getUsers').subscribe({
+      next: (data: any) => {
+        this.us = data;
+        if (this.us && this.us.usuarios) { // Verificación adicional
+          for (let i = 0; i < this.us.usuarios.length; i++) {
+            let usuario = this.us.usuarios[i].usuario;
+            let tam = this.us.usuarios[i].autosNoAprobados?.length || 0;
+
+            for (let j = 0; j < tam; j++) {
+              this.us.usuarios[i].autosNoAprobados[j]['usuario'] = usuario;
+              this.autos.push(this.us.usuarios[i].autosNoAprobados[j]);
+            }
+          }
+        } else {
+          console.error('La respuesta no contiene usuarios', this.us);
+        }
+      },
+      error: (error: any) => {
+        console.log('Error ->', error);
+      }
+    });
+
+
+
+  }
+
+  onCheckboxChangeAutos(event: any, auto: any) {
+    if (event.target.checked) {
+      this.autosSeleccionados.push(auto);
+    } else {
+      const index = this.autosSeleccionados.indexOf(auto);
+      if (index > -1) {
+        this.autosSeleccionados.splice(index, 1);
+      }
+    }
+    console.log('Seleccionados ->', this.autosSeleccionados);
+  }
+
+  guardarSeleccionAutos() {
+    let json = {
+      usuarios: this.autosSeleccionados
+    }
+
+    this.http.consult_post('/admin/aceptar/autos', json).subscribe({
+
+      next: (data: any) => {
+        console.log('Data ->', data);
+        if (data.status == true) {
+          Swal.fire('¡Éxito!', 'Los autos han sido aceptados.', 'success');
+          
+        } else {
+          Swal.fire('¡Error!', 'No se pudieron aceptar los autos.', 'error');
+        }
+      },
+      error: (error: any) => {
+        console.log('Error ->', error);
+      }
+    });
+
+    //eliminar los autos seleccionados de la lista de autos
+    for (let i = 0; i < this.autosSeleccionados.length; i++) {
+      for (let j = 0; j < this.autos.length; j++) {
+        if (this.autosSeleccionados[i]._id == this.autos[j]._id) {
+          this.autos.splice(j, 1);
+        }
+      }
+    }
+
+    console.log('Autos seleccionados:', json);
+    // Aquí puedes agregar la lógica para manejar los autos seleccionados, por ejemplo, enviar los datos al servidor
+  }
 
 
   constructor(
@@ -34,6 +118,10 @@ export class RecepcionistaComponent implements OnInit {
     private router: Router,
     private usuarioDataService: UsuarioDataService
   ) {}
+
+
+  //===============================Seccion de viajes================================
+ 
 
   ngOnInit() {
     this.data = this.usuarioDataService.getUsuarioData();

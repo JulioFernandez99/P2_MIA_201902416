@@ -89,6 +89,8 @@ router.post('/asignar/autos', adminController.appendAutos);
 
 router.post('/aceptar/viajes', adminController.confirmaViajes);
 
+router.post('/aceptar/autos', adminController.confirmarAutos);
+
 router.get('/getUsers', adminController.getUsers);
 
 module.exports = router;

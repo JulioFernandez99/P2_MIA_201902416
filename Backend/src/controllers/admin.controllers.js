@@ -9,6 +9,7 @@ const {appendToViajes} = require('../config/db.mongo');
 const {appendToAutos} = require('../config/db.mongo');
 const {getUsuarios} = require('../config/db.mongo');
 const {aceptarViajes} = require('../config/db.mongo');
+const {aceptarAutos} = require('../config/db.mongo');
 
 const {getAutos} = require('../config/db.mongo');
 
@@ -429,6 +430,26 @@ const confirmaViajes = async (req, res) => {
 
 }
 
+
+confirmarAutos = async (req, res) => {
+    const { usuarios } = req.body;
+    console.log("Array de usuarios ----->", usuarios);
+    const result = await aceptarAutos(usuarios);
+    if (result instanceof Error) {
+        return res.json({
+            status: false,
+            message: 'Error al aceptar los autos del usuario',
+        });
+    }
+
+    return res.json({
+        status: true,
+        message: 'Autos aceptados correctamente',
+        usuarios: result
+    });
+
+}
+
 module.exports = {
     registro,
     registroViaje,
@@ -441,5 +462,6 @@ module.exports = {
     getUsers,
     confirmaViajes,
     autos,
-    appendAutos
+    appendAutos,
+    confirmarAutos
 };
