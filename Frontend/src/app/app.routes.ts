@@ -12,6 +12,10 @@ import { UsuarioComponent } from './components/usuario/usuario.component';
 
 import { RecepcionistaComponent } from './components/recepcionista/recepcionista.component';
 
+import {ListasVehiculosComponent} from './components/listasVehiculos/listas-vehiculos.component';
+import {ListasViajesComponent} from './components/listasViajes/listas-viajes.component';
+
+
 export const routes: Routes = [
     {
         path: 'admin/dashboard',
@@ -57,6 +61,14 @@ export const routes: Routes = [
     {
         path: 'dashboard/recepcionista',
         component: RecepcionistaComponent
+    },
+    {
+        path: 'usuario/misViajes',
+        component: ListasViajesComponent
+    },
+    {
+        path: 'usuario/misAutos',
+        component: ListasVehiculosComponent
     },
     
 ];
