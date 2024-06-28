@@ -98,8 +98,8 @@ const appendToViajes = async (username, newViaje) => {
         const coleccion = dbmongo.collection('Usuarios');
         result2 = null;
         
-        if (newViaje.length > 0) {
-            for (let i = 0; i < newViaje.length; i++) {
+        if (newViaje?.length || 0  > 0) {
+            for (let i = 0; i < newViaje?.length || 0; i++) {
 
                 //verificar si el viaje ya existe en viajesNoAprobados o viajesComprados,si existe continuar con el siguiente viaje
                 const resultData = await getData('Usuarios', { usuario: username });
@@ -117,8 +117,8 @@ const appendToViajes = async (username, newViaje) => {
 
                 }
 
-                if (resultData.viajesNoAprobados.length > 0) {
-                    for (let j = 0; j < resultData.viajesNoAprobados.length; j++) {
+                if (resultData.viajesNoAprobados?.length || 0 > 0) {
+                    for (let j = 0; j < resultData.viajesNoAprobados?.length || 0; j++) {
                         if (resultData.viajesNoAprobados[j].ciudadOrigen == newViaje[i].ciudadOrigen && resultData.viajesNoAprobados[j].ciudadDestino == newViaje[i].ciudadDestino) {
                             return res.json({
                                 status: false,
@@ -128,8 +128,8 @@ const appendToViajes = async (username, newViaje) => {
                     }
                 }
 
-                if (resultData.viajesComprados.length > 0) {
-                    for (let j = 0; j < resultData.viajesComprados.length; j++) {
+                if (resultData.viajesComprados?.length || 0 > 0) {
+                    for (let j = 0; j < resultData.viajesComprados?.length || 0; j++) {
                         if (resultData.viajesComprados[j].ciudadOrigen == newViaje[i].ciudadOrigen && resultData.viajesComprados[j].ciudadDestino == newViaje[i].ciudadDestino) {
                             return res.json({
                                 status: false,
@@ -171,6 +171,74 @@ const appendToViajes = async (username, newViaje) => {
         await mongoClient.close();
     }
 };
+
+const appendToAutos = async (username, newAuto) => {
+    console.log('uri', uri);
+    const mongoClient = new MongoClient(uri);
+    try {
+        await mongoClient.connect();
+        const dbmongo = mongoClient.db('Usuarios');
+        const coleccion = dbmongo.collection('Usuarios');
+        result2 = null;
+
+        if (newAuto?.length || 0 > 0) {
+            for (let i = 0; i < newAuto?.length || 0; i++) {
+
+                //verificar si el auto ya existe en autosAlquilados,si existe continuar con el siguiente auto
+                const resultData = await getData('Usuarios', { usuario: username });
+                if (resultData instanceof Error) {
+                    return res.json({
+                        status: false,
+                        message: 'Error al obtener datos de la base de datos',
+                    });
+                }
+                if (resultData == null) {
+                    return res.json({
+                        status: false,
+                        message: 'El usuario no existe',
+                    });
+
+                }
+
+                if (resultData.autosNoAprobados?.length || 0 > 0) {
+                    for (let j = 0; j < resultData.autosNoAprobados?.length || 0; j++) {
+                        if (resultData.autosNoAprobados[j].marca == newAuto[i].marca && resultData.autosNoAprobados[j].modelo == newAuto[i].modelo) {
+                            console.log('El auto ya existe en autosNoAprobados');
+                        }
+                    }
+                }
+
+                if (resultData.autosComprados?.length || 0 > 0) {
+                    for (let j = 0; j < resultData.autosComprados?.length || 0; j++) {
+                        if (resultData.autosComprados[j].placa == newAuto[i].placa) {
+                            return res.json({
+                                status: false,
+                                message: 'La placa ya existe en autosAlquilados',
+                            });
+                        }
+                    }
+                }
+
+
+                // Busca el usuario y hacer append a 'newAuto'
+                const result = await coleccion.updateOne(
+                    { usuario: username }, // filtro para buscar al usuario
+                    { $push: { autosNoAprobados: newAuto[i] } } // operador para hacer append al array 'autosAlquilados'
+                );
+
+            }
+        }
+
+        
+        return result2;
+    } catch (error) {
+        console.error('Error appendToAutos: ', error);
+        return error;
+    } finally {
+        await mongoClient.close();
+    }
+};
+
 
 const appendToAutosAlquilados = async (username, newAuto) => {
     console.log('uri', uri);
@@ -375,4 +443,5 @@ module.exports = {
     getViajes,
     aceptarViajes,
     getAutos,
+    appendToAutos
 };

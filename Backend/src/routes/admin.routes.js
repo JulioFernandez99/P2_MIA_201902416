@@ -85,6 +85,8 @@ router.post('/autos', adminController.autos);
 
 router.post('/asignar/viajes', adminController.appendViajes);
 
+router.post('/asignar/autos', adminController.appendAutos);
+
 router.post('/aceptar/viajes', adminController.confirmaViajes);
 
 router.get('/getUsers', adminController.getUsers);

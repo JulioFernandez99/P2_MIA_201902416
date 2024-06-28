@@ -26,6 +26,7 @@ export class UsuarioComponent implements OnInit { // Implementa OnInit
   isAuto: boolean = false;
   data: any;
   autos: any;
+  autosSeleccionados: any[] = [];
 
   cambiarAViajes() {
     this.isAuto = false; 
@@ -103,27 +104,27 @@ export class UsuarioComponent implements OnInit { // Implementa OnInit
   ) {}
 
   toggleSeleccionAutos(index: number) {
-    if (this.viajesSeleccionados.includes(this.viajes[index])) {
+    if (this.autosSeleccionados.includes(this.autos[index])) {
       // Si ya está seleccionado, lo eliminamos del array de seleccionados
       this.viajesSeleccionados = this.viajesSeleccionados.filter(viaje => viaje !== this.viajes[index]);
     } else {
       // Si no está seleccionado, lo agregamos al array de seleccionados
-      this.viajesSeleccionados.push(this.viajes[index]);
+      this.autosSeleccionados.push(this.autos[index]);
     }
   }
 
   guardarSeleccionadosAutos() {
     // Aquí puedes realizar la lógica para guardar los viajes seleccionados en tu base de datos
-    console.log('Viajes seleccionados:', this.viajesSeleccionados);
+    console.log('Autos seleccionados:', this.autosSeleccionados);
 
     this.infoUsuario ={
       usuario: this.data.usuario,
-      viajes: this.viajesSeleccionados
+      autos: this.autosSeleccionados
     }
 
-    this.http.consult_post('/admin/asignar/viajes',this.infoUsuario).subscribe({
+    this.http.consult_post('/admin/asignar/autos',this.infoUsuario).subscribe({
       next: (data: any) => {
-        console.log('Viajes asignados ->', data);
+        console.log('Autos asignados ->', data);
       },
       error: (error: any) => {
         console.log('Error ->', error);
@@ -131,20 +132,20 @@ export class UsuarioComponent implements OnInit { // Implementa OnInit
     });
 
       //eliminar viajes seleccionados de la lista de viajes
-      for (let i = 0; i < this.viajesSeleccionados.length; i++) {
-        for (let j = 0; j < this.viajes.length; j++) {
-          if (this.viajesSeleccionados[i]._id == this.viajes[j]._id) {
-            this.viajes.splice(j, 1)
+      for (let i = 0; i < this.autosSeleccionados.length; i++) {
+        for (let j = 0; j < this.autos.length; j++) {
+          if (this.autosSeleccionados[i]._id == this.autos[j]._id) {
+            this.autos.splice(j, 1)
           }
           
         }
           
         }
 
-    if  (this.viajesSeleccionados.length > 0) {
-      Swal.fire('¡Viajes guardados!', 'Los viajes seleccionados han sido guardados.', 'success');
+    if  (this.autosSeleccionados.length > 0) {
+      Swal.fire('¡Viajes guardados!', 'Los autos seleccionados han sido guardados.', 'success');
     }else{
-      Swal.fire('¡Error!', 'No se han seleccionado viajes.', 'error');
+      Swal.fire('¡Error!', 'No se han seleccionado autos.', 'error');
     }
 
     // Ejemplo de cómo podrías usar SweetAlert para mostrar un mensaje

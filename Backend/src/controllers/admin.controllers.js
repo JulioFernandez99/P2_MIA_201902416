@@ -6,6 +6,7 @@ const {eliminarUsuario} = require('../config/db.mongo');
 const {insertViajes} = require('../config/db.mongo');
 const {insertAutos} = require('../config/db.mongo');
 const {appendToViajes} = require('../config/db.mongo');
+const {appendToAutos} = require('../config/db.mongo');
 const {getUsuarios} = require('../config/db.mongo');
 const {aceptarViajes} = require('../config/db.mongo');
 
@@ -373,7 +374,25 @@ const appendViajes = async (req, res) => {
         message: 'Viaje agregado correctamente al usuario'
     });
 };
+  
+const appendAutos = async (req, res) => {
     
+    const { usuario, autos } = req.body;
+    
+    const result = await appendToAutos(usuario, autos);
+    if (result instanceof Error) {
+        return res.json({
+            status: false,
+            message: 'Error al agregar el auto al usuario en la base de datos',
+        });
+    }
+    
+    return res.json({
+        status: true,
+        message: 'Auto agregado correctamente al usuario'
+    });
+};
+
 const getUsers = async (req, res) => {
     const result = await getUsuarios('Usuarios');
     if (result instanceof Error) {
@@ -421,5 +440,6 @@ module.exports = {
     appendViajes,
     getUsers,
     confirmaViajes,
-    autos
+    autos,
+    appendAutos
 };
