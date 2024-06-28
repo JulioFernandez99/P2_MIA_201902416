@@ -23,7 +23,18 @@
                                     </div>
 
                                     <div class="form-outline form-white mb-4">
-                                        <input formControlName="foto" type="text" name="foto" class="form-control" id="foto" required />
+                                        <input 
+                                         formControlName="foto"
+                                         type="file" 
+                                         name="foto" 
+                                         class="form-control" 
+                                         id="foto" 
+                                         accept="image/*"
+                                         (change)="onFileSelected($event)"
+                                         required>
+                                        
+
+
                                         <label for="foto" class="form-label">Foto</label>
                                         <div class="invalid-feedback">Please, enter your name!</div>
                                     </div>

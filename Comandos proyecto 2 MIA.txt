@@ -49,3 +49,12 @@ docker rm  mongodb
 
 
 sudo fuser -k 3000/tcp
+
+
+
+Clave de acceso
+AKIAZI2LH6SOPJLOZTNA
+
+
+Clave de acceso secreta
+gmCSD/2m/liY/fyeUTKQ7KSCx2SZj+h5WWtfmHiA

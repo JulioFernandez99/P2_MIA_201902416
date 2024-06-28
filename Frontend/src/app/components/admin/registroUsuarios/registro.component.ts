@@ -25,7 +25,11 @@ export class RegistroComponent {
     private router: Router
   ){}
 
+  imagen: any = '';
+  imagen_path: any = '';
+
   form_registro = new FormGroup({
+    path: new FormControl(''),
     nombre: new FormControl('', Validators.required),
     usuario: new FormControl('', Validators.required),
     foto: new FormControl('', Validators.required),
@@ -87,6 +91,30 @@ export class RegistroComponent {
       console.log('Formulario invalido');
     }
   }
+
+  onFileSelected(event: any){
+    // Seleccionar el archivo y convertirlo a base64
+    this.imagen = event.target.files[0];
+    const reader = new FileReader();
+    reader.onload = (event:any) => {
+      console.log(reader.result);
+      this.imagen_path = event.target.result;
+    }
+    reader.readAsDataURL(this.imagen);
+  }
+
+  encodeFileAsBase64(file:any){
+    return new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.addEventListener('loadend', () =>{
+        console.log(reader.result);
+        resolve(reader.result);
+      });
+      reader.readAsDataURL(file);
+    });
+  }
+
+
 }
 
 
