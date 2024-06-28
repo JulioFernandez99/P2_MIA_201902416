@@ -208,16 +208,16 @@ const appendToAutos = async (username, newAuto) => {
                     }
                 }
 
-                if (resultData.autosComprados?.length || 0 > 0) {
-                    for (let j = 0; j < resultData.autosComprados?.length || 0; j++) {
+                
+                if (resultData.autosComprados && resultData.autosComprados.length > 0) {
+                    for (let j = 0; j < resultData.autosComprados.length; j++) {
                         if (resultData.autosComprados[j].placa == newAuto[i].placa) {
-                            return res.json({
-                                status: false,
-                                message: 'La placa ya existe en autosAlquilados',
-                            });
+                           console.log('El auto ya existe en autosComprados');
                         }
                     }
                 }
+                
+                
 
 
                 // Busca el usuario y hacer append a 'newAuto'
