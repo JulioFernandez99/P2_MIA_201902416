@@ -26,8 +26,11 @@ export class RegistroRecepcionistaComponent {
     private http: RegistroRecepcionistaService,
     private router: Router
   ){}
+  imagen: any = '';
+  imagen_path: any = '';
 
   form_registroRecepcionista = new FormGroup({
+    path: new FormControl(''),
     nombre: new FormControl('', Validators.required),
     usuario: new FormControl('', Validators.required),
     foto: new FormControl('', Validators.required),
@@ -50,6 +53,10 @@ export class RegistroRecepcionistaComponent {
     ); 
     if (this.form_registroRecepcionista.valid){
       if (this.form_registroRecepcionista.value.password === this.form_registroRecepcionista.value.conf_password){
+        const index = this.imagen_path.indexOf(",");
+        this.imagen_path = this.imagen_path.slice(index + 1);
+        this.form_registroRecepcionista.value.foto = this.imagen_path;
+        this.form_registroRecepcionista.value.path = this.imagen.name;
         this.http.consult_post('/admin/registro/recepcionista', this.form_registroRecepcionista.value).subscribe({
           next: (data: any) => {
             if (data.status ){
@@ -88,4 +95,28 @@ export class RegistroRecepcionistaComponent {
     }
   
 }
+
+onFileSelected(event: any){
+  // Seleccionar el archivo y convertirlo a base64
+  this.imagen = event.target.files[0];
+  const reader = new FileReader();
+  reader.onload = (event:any) => {
+    console.log(reader.result);
+    this.imagen_path = event.target.result;
+  }
+  reader.readAsDataURL(this.imagen);
+}
+
+encodeFileAsBase64(file:any){
+  return new Promise((resolve) => {
+    const reader = new FileReader();
+    reader.addEventListener('loadend', () =>{
+      console.log(reader.result);
+      resolve(reader.result);
+    });
+    reader.readAsDataURL(file);
+  });
+}
+
+
 }

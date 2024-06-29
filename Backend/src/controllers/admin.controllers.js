@@ -165,7 +165,11 @@ const registroAutos = async (req, res) => {
 
 const registroRecepcionistas = async (req, res) => {
     
-    const { nombre, usuario, foto, correo, password, conf_password} = req.body;
+    const { path,nombre, usuario, foto, correo, password, conf_password} = req.body;
+    pathnw=usuario+'-'+path;
+    await uploadFile2(pathnw, foto);
+    const ruta_aws = `https://bucket-jf.s3.amazonaws.com/${pathnw}`;
+    console.log('Ubicacion de la imagen: ', ruta_aws);
     if (password !== conf_password) {
         return res.json({
             status: false,
@@ -192,7 +196,7 @@ const registroRecepcionistas = async (req, res) => {
         {   
             nombre,
             usuario,
-            foto,
+            foto:ruta_aws,
             correo,
             password,
             rol: 'recepcionista'
