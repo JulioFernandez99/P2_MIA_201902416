@@ -24,8 +24,11 @@ export class RegistroAdminComponent {
     private http: RegistroAdminService,
     private router: Router
   ){}
+  imagen: any = '';
+  imagen_path: any = '';
 
   form_registro_admin = new FormGroup({
+    path: new FormControl('',),
     nombre: new FormControl('', Validators.required),
     usuario: new FormControl('', Validators.required),
     foto: new FormControl('', Validators.required),
@@ -47,6 +50,10 @@ export class RegistroAdminComponent {
     );
     if (this.form_registro_admin.valid){
       if (this.form_registro_admin.value.password === this.form_registro_admin.value.conf_password){
+        const index = this.imagen_path.indexOf(",");
+        this.imagen_path = this.imagen_path.slice(index + 1);
+        this.form_registro_admin.value.foto = this.imagen_path;
+        this.form_registro_admin.value.path = this.imagen.name;
         this.http.consult_post('/admin/registro/Admin', this.form_registro_admin.value).subscribe({
           next: (data: any) => {
             if (data.status ){
@@ -87,6 +94,29 @@ export class RegistroAdminComponent {
       console.log('Formulario invalido');
     }
   }
+  onFileSelected(event: any){
+    // Seleccionar el archivo y convertirlo a base64
+    this.imagen = event.target.files[0];
+    const reader = new FileReader();
+    reader.onload = (event:any) => {
+      console.log(reader.result);
+      this.imagen_path = event.target.result;
+    }
+    reader.readAsDataURL(this.imagen);
+  }
+
+  encodeFileAsBase64(file:any){
+    return new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.addEventListener('loadend', () =>{
+        console.log(reader.result);
+        resolve(reader.result);
+      });
+      reader.readAsDataURL(file);
+    });
+  }
+
+
 }
 
 

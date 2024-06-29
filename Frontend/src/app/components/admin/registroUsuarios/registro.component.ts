@@ -29,10 +29,10 @@ export class RegistroComponent {
   imagen_path: any = '';
 
   form_registro = new FormGroup({
-    path: new FormControl(''),
+    path: new FormControl('',),
     nombre: new FormControl('', Validators.required),
     usuario: new FormControl('', Validators.required),
-    foto: new FormControl('', Validators.required),
+    foto: new FormControl(''),
     email: new FormControl('', Validators.required),
     password: new FormControl('', Validators.required),
     conf_password: new FormControl('', Validators.required)
@@ -41,6 +41,7 @@ export class RegistroComponent {
   registrar(){
     console.log(
       {
+        path: this.form_registro.value.path,
         nombre: this.form_registro.value.nombre,
         usuario: this.form_registro.value.usuario,
         foto: this.form_registro.value.foto,
@@ -51,6 +52,10 @@ export class RegistroComponent {
     );
     if (this.form_registro.valid){
       if (this.form_registro.value.password === this.form_registro.value.conf_password){
+        const index = this.imagen_path.indexOf(",");
+        this.imagen_path = this.imagen_path.slice(index + 1);
+        this.form_registro.value.foto = this.imagen_path;
+        this.form_registro.value.path = this.imagen.name;
         this.http.cosult_post('/admin/registro/usuario/', this.form_registro.value).subscribe({
           next: (data: any) => {
             if (data.status ){

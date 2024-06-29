@@ -38,6 +38,34 @@ const uploadFile = async (req, res) => {
     });
 };
 
+const uploadFile2 = async (path, imagen) => {
+    // 062620241234012340.jpg
+    const buffer = new Buffer.from(imagen, 'base64');
+    console.log('Bucket: ', BUCKET_USER_ID)
+    const s3 = new aws.S3({
+        accessKeyId: BUCKET_USER_ID,
+        secretAccessKey: BUCKET_USER_SECRET,
+        ContentType: 'image/jpeg/png',
+        ACL: 'public-read',
+    });
+
+    const params = {
+        Bucket: BUCKET_NAME,
+        Key: path,
+        Body: buffer,
+    };
+
+    await s3.upload(params, function sync(err, data) {
+        if (err) {
+            console.log("Error", err);
+        } else {
+              
+            return data.Location;
+        }});  
+};
+
+
 module.exports = {
-    uploadFile
+    uploadFile,
+    uploadFile2
 };

@@ -10,6 +10,7 @@ const {appendToAutos} = require('../config/db.mongo');
 const {getUsuarios} = require('../config/db.mongo');
 const {aceptarViajes} = require('../config/db.mongo');
 const {aceptarAutos} = require('../config/db.mongo');
+const {uploadFile2} = require('../config/bucket');
 
 const {getAutos} = require('../config/db.mongo');
 
@@ -17,7 +18,12 @@ const registro = async (req, res) => {
     // se obtienen los datos del body
     
 
-    const { nombre, usuario ,foto,email ,password, conf_password } = req.body;
+    const { path,nombre, usuario ,foto,email ,password, conf_password } = req.body;
+    //al inicio del path agregar el nombre de usuario
+    pathnw=usuario+'-'+path;
+    await uploadFile2(pathnw, foto);
+    const ruta_aws = `https://bucket-jf.s3.amazonaws.com/${pathnw}`;
+    console.log('Ubicacion de la imagen: ', ruta_aws);
     // un res.json de los datos que se reciben
     if (password !== conf_password) {
         return res.json({
@@ -48,7 +54,7 @@ const registro = async (req, res) => {
         {   
             nombre,
             usuario,
-            foto,
+            foto:ruta_aws,
             email,
             password:password,
             viajesComprados: [],
@@ -219,7 +225,11 @@ const registroAdmin = async (req, res) => {
     // se obtienen los datos del body
     
 
-    const { nombre, usuario ,foto,email ,password, conf_password } = req.body;
+    const { path,nombre, usuario ,foto,email ,password, conf_password } = req.body;
+    pathnw=usuario+'-'+path;
+    await uploadFile2(pathnw, foto);
+    const ruta_aws = `https://bucket-jf.s3.amazonaws.com/${pathnw}`;
+    console.log('Ubicacion de la imagen: ', ruta_aws);
     // un res.json de los datos que se reciben
     if (password !== conf_password) {
         return res.json({
@@ -250,7 +260,7 @@ const registroAdmin = async (req, res) => {
         {   
             nombre,
             usuario,
-            foto,
+            foto:ruta_aws,
             email,
             password:password,
             viajesComprados: [],

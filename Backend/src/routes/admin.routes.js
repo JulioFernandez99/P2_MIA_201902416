@@ -16,6 +16,8 @@ router.get('/' , (req , res)=>{
 });
 
 router.post('/registro/usuario', [
+    check('path', 'El id es obligatorio').not().isEmpty(),
+    check('foto', 'El id es obligatorio').not().isEmpty(),
     check('nombre', 'El id es obligatorio').not().isEmpty(),
     check('usuario', 'El usuario es obligatorio').not().isEmpty(),
     check('foto', 'La foto es obligatoria').not().isEmpty(),
