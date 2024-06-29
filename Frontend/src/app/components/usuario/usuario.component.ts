@@ -286,9 +286,9 @@ export class UsuarioComponent implements OnInit { // Implementa OnInit
     });
   
 
-    if (this.viajes?.length || 0 == 0) {
-      Swal.fire('¡No hay viajes!', 'No hay viajes disponibles para asignar.', 'warning');
-    }
+    // if ((this.viajes?.length || 0) == 0) {
+    //   Swal.fire('¡No hay viajes!', 'No hay viajes disponibles para asignar.', 'warning');
+    // }
 
     console.log('Usuario data:', this.data.usuario);
     }

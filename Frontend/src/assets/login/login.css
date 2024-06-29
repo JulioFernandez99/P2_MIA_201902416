@@ -29,3 +29,16 @@
 .card-body .btn {
     margin-top: 1rem; /* Optional: Adjust the top margin of the button */
 }
+
+
+.image-container {
+    margin-top: 20px;
+}
+
+.image-container img {
+    max-width: 100%;
+    height: auto;
+    max-height: 175px; /* Ajusta el tamaño máximo de altura según tus necesidades */
+    display: block;
+    margin: 0 auto; /* Centra la imagen horizontalmente */
+}
