@@ -58,3 +58,6 @@ AKIAZI2LH6SOPJLOZTNA
 
 Clave de acceso secreta
 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
+
+
+ssh -i "mia_vacas_2024.pem" ubuntu@ec2-52-207-224-130.compute-1.amazonaws.com
