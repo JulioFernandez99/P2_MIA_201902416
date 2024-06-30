@@ -14,13 +14,14 @@
 
     <nav id="navbar" class="navbar">
       <ul>
+        
         <li><a class="nav-link scrollto active" href="/admin/registro/usuario">Usuarios</a></li>
         <li><a class="nav-link scrollto" href="/admin/registro/recepcionista">Recepcionistas</a></li>
         <li><a class="nav-link scrollto" href="/admin/registro/viaje">Viajes</a></li>
         <li><a class="nav-link scrollto" href="/admin/registro/auto">Autos</a></li>
         <li><a class="nav-link scrollto" href="admin/delete/usuario">Eliminar Usuario</a></li>
        
-        <li><a class="nav-link scrollto" href="login">Login</a></li>
+        <li><a class="nav-link scrollto" href="login">Logout</a></li>
       </ul>
       <i class="bi bi-list mobile-nav-toggle"></i>
     </nav><!-- .navbar -->
@@ -30,7 +31,8 @@
   <!-- ======= Hero Section ======= -->
   <section id="hero">
     <div class="hero-container">
-      <h1>Bienvenido</h1>
+      <h1>Bienvenidos {{data.usuario}}</h1>
+      <img [src]="data.foto" alt="Imagen de bienvenida" class="hero-image" >
       <h2>Tienes permisos de administracion</h2>
       
     </div>
