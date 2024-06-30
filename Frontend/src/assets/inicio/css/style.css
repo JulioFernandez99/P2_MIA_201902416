@@ -238,6 +238,8 @@ h6 {
   margin-top: 20px; /* Añade un margen superior para separar la imagen del texto */
   margin-bottom: 20px; /* Añade un margen inferior */
 }
+
+
 .navbar-mobile {
   position: fixed;
   overflow: hidden;
