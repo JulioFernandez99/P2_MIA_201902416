@@ -227,6 +227,17 @@ h6 {
   }
 }
 
+.hero-container {
+  text-align: center; /* Centra el contenido dentro del contenedor si es necesario */
+}
+
+.hero-image {
+  width: 200px;
+  height: 200px;
+  object-fit: contain; /* Mantiene las proporciones y recorta si es necesario */
+  margin-top: 20px; /* Añade un margen superior para separar la imagen del texto */
+  margin-bottom: 20px; /* Añade un margen inferior */
+}
 .navbar-mobile {
   position: fixed;
   overflow: hidden;
