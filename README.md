@@ -5,10 +5,8 @@
 
 - [Información](#Información)
 - [Manual de usuario](#Manual-de-usuario)
-    - [Archivos](#Archivos)
-    - [Editar](#Editar)
-    - [Consolas](#Consolas)
-    - [Ejecutar](#Ejecutar)
+    - [Login](#Login)
+    - [Dashboard administrador](#DashBoardadministrador)
 - [Manual técnico](#Manual-técnico)
     - [Gramatica](#Gramatica)
     - [Herramientas utilizadas](#Herramientas-utilizadas)
@@ -44,10 +42,19 @@ Seguido a ello se deplegara la pagina de inicio donde puede visualizar toda la i
 Aca debe de ingresar su user y password, si no cuenta con uno, debe solicitar a un administrador que lo registre. Si ya cuenta con un usuario, aca podra realizar la reserva
 de viajes y autos. Y el historial de los mismos.
 
+
+
 <details>
 <summary>Login</summary>
      <div align="center">
         <a href="" target="_blank"><img src="https://github.com/JulioFernandez99/P2_MIA_201902416/blob/main/FilesReportes/login.png" style="width:50rem"></a>
+    </div>
+</details>
+
+<details>
+<summary>Dashboard usuario</summary>
+     <div align="center">
+        <a href="" target="_blank"><img src="https://github.com/JulioFernandez99/P2_MIA_201902416/blob/main/FilesReportes/dashUsuarioViajes.png" style="width:50rem"></a>
     </div>
 </details>
 
