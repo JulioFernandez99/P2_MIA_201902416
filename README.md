@@ -1,5 +1,5 @@
 # MIA | Proyecto 2 
-## AVICAR
+## ✈️ AVICAR ✈️
 
 # 📋 Indice
 
@@ -11,14 +11,14 @@
     - [Gramatica](#Gramatica)
     - [Herramientas utilizadas](#Herramientas-utilizadas)
 
-# Información
+# 📝 Información
 “AviCar” es el sistema que se desarrollará para el gestionamiento de viajes de todo turista
 alrededor del mundo; con el fin de garantizar una completa y agradable experiencia en época
 de post pandemia. La finalidad es centralizar los datos y que el cliente haga la menor
 cantidad de validaciones al momento de planificar su viaje.
 
 
-# Manual de usuario
+# 👤 Manual de usuario
 Para este proyecto existen tres tipos de usuarios:
 
 - Turista: Toda persona que desea hacer un viaje a cualquier parte del mundo,
@@ -41,8 +41,6 @@ Seguido a ello se deplegara la pagina de inicio donde puede visualizar toda la i
 ### Login
 Aca debe de ingresar su user y password, si no cuenta con uno, debe solicitar a un administrador que lo registre. Si ya cuenta con un usuario, aca podra realizar la reserva
 de viajes y autos. Y el historial de los mismos.
-
-
 
 <details>
 <summary>Login</summary>
@@ -101,43 +99,107 @@ Este usuario tiene las opciones de agregar viajes, usuarios,autos y eliminarlos.
 
 
 
-## Archivos
-Se cuenta con la opción de cargar archivos y guardar el archivo.
+# 🖥️ Manual técnico
+Este proyecto se desarrolo en diferentes modulos. Por una parte se desarrolo el backend,el frontend y la base de datos. Tambien se utilizaron servicios de amazon para el despliegue de la aplicacion y el amacenamiento de las foto de cada usuario.
 
-<div align="center">
-    <a href="" target="_blank"><img src="https://github.com/JulioFernandez99/COMPI2-P1/blob/main/Files/Archivo.png" style="width:10rem"></a>
-</div>
-
-## Editar
-Es la opción habilita la opción de escribir y/o modificar el texto en el área de código para su análisis.
-
-<div align="center">
-    <a href="" target="_blank"><img src="https://github.com/JulioFernandez99/COMPI2-P1/blob/main/Files/Editor.png" style="width:25rem"></a>
-</div>
-
-## Consolas
-Se puede ver tanto la salida del código en consola,el listado de los errores y la tabla de simbolos.
-<div align="center">
-    <a href="" target="_blank"><img src="https://github.com/JulioFernandez99/COMPI2-P1/blob/main/Files/Consola.png" style="width:30rem"></a>
-</div>
-<div align="center">
-    <a href="" target="_blank"><img src="https://github.com/JulioFernandez99/COMPI2-P1/blob/main/Files/Errores.png" style="width:30rem"></a>
-</div>
-<div align="center">
-    <a href="" target="_blank"><img src="https://github.com/JulioFernandez99/COMPI2-P1/blob/main/Files/TablaSimbolos.png" style="width:30rem"></a>
-</div>
+### Tecnologias
+Para el desarrolo de estre proyecto se utilizaron varias tecnologias:
+- nodeJs: para la ejecucion de js en el servidor.
+- mongoDB: para el dasarrolo de la base de datos.
+- docker: para crear el servicio de ejecucion del proyecto.
+- ec2: para el despliegue de la aplicacion.
+- s3: bucket para almacenamiento de fotos.
 
 
+### Backend
+Para el desarrolo de este, se utilizo nodejs y es aca donde se desarrolla la API para todas las funcionalidades del proyecto.
 
-## Ejecutar
-Ejecuta el código escrito en el área de código.
-<div align="center">
-    <a href="" target="_blank"><img src="https://github.com/JulioFernandez99/COMPI2-P1/blob/main/Files/Consola.png" style="width:30rem"></a>
-</div>
+- Configuracion del servidor: aca se declaran las variables necesarias para iniciar el servidor, una de las partes mas importantes es la variable app ya que crea una instacia de express (el servidor), tambien se declaran el limite del json que podria recibir el servidor, aca tambien es donde se inicializan los cors, que seran necesarios para la conexion con el frontend.
 
-# Manual técnico
+  <details>
+        <summary>Condiguracion del servidor</summary>
+      
+            //! Aca se configura el servidor de express
 
-Para la realización de este proyecto se utilizó el lenguaje de programación Python, el cual nos permite realizar el análisis léxico, sintáctico y semántico del lenguaje OLCScript. Para la realización de la interfaz gráfica se utilizó TKinter.
+            const express = require('express');
+            const morgan = require('morgan');
+            const cors = require('cors');
+            
+            
+            const app = express(); //esto crea un objeto del servidor de express
+            const routesAdmin = require('./routes/admin.routes');
+            const routesLogin = require('./routes/login.routes');
+            
+            //? =================================================Settings=================================================
+            app.use(cors({
+                origin: '*',
+                methods: 'GET, POST, PUT, DELETE',
+                allowedHeaders: 'Content-Type, Authorization'
+            }));
+            app.use(express.json({limit: '500mb'}));
+            app.use(express.urlencoded({ limit: '500mb', extended: true }));
+            app.use(morgan('dev'));
+            
+            
+            //^ =================================================Routes=================================================
+            app.get('/' , (req , res)=>{
+               res.json(
+                {
+                    status:true,
+                    message:"Welcome to the API"
+                });
+            });
+            
+            //* Rutas de usuarios
+            
+            app.use('/admin', routesAdmin);
+            app.use('/login', routesLogin);
+            
+            
+            
+            module.exports = app;
+    </details>
+
+- Inicio del servidor: aca se inicia el servidor en el puerto definido por las variables de entorno.
+
+   <details>
+        <summary>Inicio del servidor</summary>
+
+        //! Aca se arranca el servidor de express
+        const app = require('./app');
+        require('dotenv').config();
+        
+        const PORT = process.env.PORT || 3000;
+        
+        app.listen(PORT, () => {
+            console.log(`Servidor corriendo en http://localhost:${PORT}`)
+        })
+
+    </details>   
+
+   <details>
+        <summary>Variables de entorno</summary>
+
+        PORT='3000'
+
+
+        # CONFIGURACION DE MONGO
+        MONGO_USER='root'
+        MONGO_PASSWORD='M1A2024.'
+        MONGO_HOST='192.168.0.8'
+        MONGO_PORT='27017'
+        MONGO_DATABASE='BD1'
+        #52.207.224.130
+        #
+        
+        # CONFIGURACION DE BUCKET DE AWS
+        BUCKET_USER_ID = 'AKIAZI2LH6SONAQDJYGJ'
+        BUCKET_USER_SECRET = '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'
+        BUCKET_NAME = 'bucket-jf'
+        BUCKET_REGION = 'us-east-1'
+        
+
+</details>   
 
 ## Gramatica
 
