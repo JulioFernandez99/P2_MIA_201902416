@@ -24,20 +24,76 @@ cantidad de validaciones al momento de planificar su viaje.
 # Manual de usuario
 Para este proyecto existen tres tipos de usuarios:
 
-- [Turista]: Toda persona que desea hacer un viaje a cualquier parte del mundo,
+- Turista: Toda persona que desea hacer un viaje a cualquier parte del mundo,
 puede visualizar todos los vuelos en la página de inicio y si desea; realizar la reservación
 de un boleto de avión, así como, el alquiler de un automóvil al momento de llegar a su
 destino.
 
-- [Recepcionista]: Este usuario será el encargado de aprobar o rechazar la
+- Recepcionista: Este usuario será el encargado de aprobar o rechazar la
 solicitud de vuelo y renta del automóvil de los usuarios que lo soliciten. (Este tipo de
 usuario únicamente podrá aceptar o rechazar las solicitudes de los usuarios turistas).
 
-- [Administrador]: Este usuario será el único usuario que podrá agregar o
+- Administrador: Este usuario será el único usuario que podrá agregar o
 eliminar usuarios turista o recepcionista, podrá revisar el historial de vuelos de cada
 usuario turista y agregar o eliminar viajes y automóviles.
 
-Para poder 
+Si desea ingresar a la pagina princiap del proyecto debera ir al siguiente enlace: http://52.207.224.130/inicio
+
+Seguido a ello se deplegara la pagina de inicio donde puede visualizar toda la informacion de avicar y tambien las opciones disponibles.
+
+### Login
+Aca debe de ingresar su user y password, si no cuenta con uno, debe solicitar a un administrador que lo registre. Si ya cuenta con un usuario, aca podra realizar la reserva
+de viajes y autos. Y el historial de los mismos.
+
+<details>
+<summary>Login</summary>
+     <div align="center">
+        <a href="" target="_blank"><img src="https://github.com/JulioFernandez99/P2_MIA_201902416/blob/main/FilesReportes/login.png" style="width:50rem"></a>
+    </div>
+</details>
+
+### DashBoard administrador
+Este usuario tiene las opciones de agregar viajes, usuarios,autos y eliminarlos.
+
+<details>
+<summary>Dashboard admin</summary>
+     <div align="center">
+        <a href="" target="_blank"><img src="https://github.com/JulioFernandez99/P2_MIA_201902416/blob/main/FilesReportes/dashAdmin.png" style="width:50rem"></a>
+    </div>
+</details>
+
+<details>
+<summary>Registro usuarios</summary>
+     <div align="center">
+        <a href="" target="_blank"><img src="https://github.com/JulioFernandez99/P2_MIA_201902416/blob/main/FilesReportes/registroUsuario.png" style="width:50rem"></a>
+    </div>
+</details>
+
+
+<details>
+<summary>Registro viajes</summary>
+     <div align="center">
+        <a href="" target="_blank"><img src="https://github.com/JulioFernandez99/P2_MIA_201902416/blob/main/FilesReportes/registroViajes.png" style="width:50rem"></a>
+    </div>
+</details>
+
+
+<details>
+<summary>Registro autos</summary>
+     <div align="center">
+        <a href="" target="_blank"><img src="https://github.com/JulioFernandez99/P2_MIA_201902416/blob/main/FilesReportes/registroAuto.png" style="width:50rem"></a>
+    </div>
+</details>
+
+<details>
+<summary>Eliminar usuarios</summary>
+     <div align="center">
+        <a href="" target="_blank"><img src="https://github.com/JulioFernandez99/P2_MIA_201902416/blob/main/FilesReportes/deleteUusario.png" style="width:50rem"></a>
+    </div>
+</details>
+
+
+
 
 ## Archivos
 Se cuenta con la opción de cargar archivos y guardar el archivo.
