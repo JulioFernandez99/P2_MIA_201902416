@@ -3,7 +3,6 @@
 
 # 📋 Indice
 
-- [Indice](#Indice)
 - [Información](#Información)
 - [Manual de usuario](#Manual-de-usuario)
     - [Archivos](#Archivos)
