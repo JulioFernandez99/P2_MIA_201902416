@@ -8,8 +8,8 @@
     - [Login](#Login)
     - [Dashboard administrador](#DashBoard_administrador)
 - [Manual técnico](#Manual-técnico)
-    - [Gramatica](#Gramatica)
-    - [Herramientas utilizadas](#Herramientas-utilizadas)
+    - [Frontend](#Frontend)
+    - [Backend](#Backend)
 
 # 📝 Información
 “AviCar” es el sistema que se desarrollará para el gestionamiento de viajes de todo turista
@@ -104,11 +104,13 @@ Este proyecto se desarrolo en diferentes modulos. Por una parte se desarrolo el 
 
 ### Tecnologias
 Para el desarrolo de estre proyecto se utilizaron varias tecnologias:
-- nodeJs: para la ejecucion de js en el servidor.
-- mongoDB: para el dasarrolo de la base de datos.
-- docker: para crear el servicio de ejecucion del proyecto.
-- ec2: para el despliegue de la aplicacion.
-- s3: bucket para almacenamiento de fotos.
+- NodeJs: para la escribir las configuraciones del servidor con js.
+- Exoress: para crear el servidor.
+- Angular: para el desarrolo del frontend.
+- MongoDB: para el dasarrolo de la base de datos.
+- Docker: para crear el servicio de ejecucion del proyecto.
+- Ec2: para el despliegue de la aplicacion.
+- S3: bucket para almacenamiento de fotos.
 
 
 ### Backend
@@ -1415,7 +1417,7 @@ En la base de datos realizada con mongo se utiliza para guardar toda la informac
      
 </details>   
 
-### BUcket S3
+### Bucket S3
 Este servicio de amazon se utiliza para el almacenamiento de las fotos de cada usuario. Y el enlace que genera este mismo se almacena en el atributo *foto* de la base de datos.
 
 <details>
@@ -1495,3 +1497,372 @@ Este servicio de amazon se utiliza para el almacenamiento de las fotos de cada u
          
 </details>   
 
+
+### Frontend
+Para el desarrollo de este fue necesario emplear angular, ya que facilita la implementacion y el enrutado de los endpoints.
+
+La forma en la que se trabajo fue componet-service y esto aplica para todo, asi que a modo de ejemplo explicaremos el login ya que es el que mas validaciones necesita.
+
+En la logica de components se procesio a modificar el login.components.ts. Tambien cabe mencionar que se utilizo un servicio extra para poder almacenar la informacion del usuario en caso de ser valida y poder ser accedida desde cualquier vista. Las validaciones si el usuario existe no se realizacon aca sino en el backend.
+
+<details>
+        <summary>Component login</summary>
+
+            import { Component } from '@angular/core';
+            import{ CommonModule } from '@angular/common';
+            import { FormsModule } from '@angular/forms';
+            import { ReactiveFormsModule, Validators } from '@angular/forms';
+            import { Router, RouterOutlet, RouterModule } from '@angular/router';
+            import { FormGroup, FormControl} from '@angular/forms';
+            import { UsuarioDataService } from '../../services/usuarioData/usuario-data.service';
+            import { LoginService } from '../../services/login/login.service';
+            import Swal from 'sweetalert2';
+            
+            @Component({
+              selector: 'app-login',
+              standalone: true,
+              imports: [
+                CommonModule,
+                ReactiveFormsModule,
+                RouterOutlet,
+                RouterModule,
+              ],
+              templateUrl: './login.component.html',
+              styleUrl: './login.component.scss'
+            })
+            export class LoginComponent {
+              constructor( 
+                private http: LoginService,
+                private router: Router,
+                private usuarioDataService: UsuarioDataService // Inyecta el servicio
+              ){}
+            
+              form_login = new FormGroup({
+                user: new FormControl('', Validators.required),
+                password: new FormControl('', Validators.required),
+              });
+            
+              login(){
+                console.log(
+                  {
+                    user: this.form_login.value.user,
+                    password: this.form_login.value.password,
+                  }
+                );
+                if (this.form_login.valid){
+                    this.http.consult_post('/login', this.form_login.value).subscribe({
+                      next: (data: any) => {
+                        if (data.status ){
+                          console.log('Data ->',data);
+                          //alert('Bienvenido '+data.data.usuario+'!'+' - Tienes permisos de '+data.data.rol);
+                          Swal.fire({
+                            title: 'Bienvenido '+data.data.usuario+'!',
+                            text: 'Tienes permisos de '+data.data.rol,
+                            icon: 'success',
+                            confirmButtonText: 'Aceptar'
+                          });
+            
+                          //hasta que se presione el boton aceptar
+                          this.usuarioDataService.setUsuarioData(data.data); // Guarda el usuario en el servicio
+                          if(data.data.rol == 'admin'){
+            
+                            this.router.navigate(['/admin/dashboard']); 
+            
+                          }else if(data.data.rol == 'usuario'){
+            
+                            this.router.navigate(['/dashboard/usuario']);
+            
+                          }else if(data.data.rol == 'recepcionista'){
+            
+                            this.router.navigate(['/dashboard/recepcionista']);
+                          }
+            
+                          //this.router.navigate(['/saludo']);
+                        }else{
+                          Swal.fire({
+                            title: 'Error!',
+                            text: data.error,
+                            icon: 'error',
+                            confirmButtonText: 'Aceptar'
+                          });
+                          //alert(data.error);
+                          console.log(data.error);
+                        }
+                      },
+                      error: (error: any) => {
+                        Swal.fire({
+                          title: 'Error!',
+                          text: 'El usuario no esta registrado',
+                          icon: 'error',
+                          confirmButtonText: 'Aceptar'
+                        });
+                        //alert('El usuario no esta registrado');
+                        console.log('El usuarios no esta registrado');
+                      }
+                    });
+                  } 
+                
+              }
+            }
+            
+            
+            // Validators.required,
+            // Validators.minLength(8),
+            // Validators.pattern('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9]+$')
+     
+</details>   
+
+
+<details>
+        <summary>Servicio login</summary>
+
+            import { Injectable,inject } from '@angular/core';
+            import { HttpClient, HttpHeaders } from '@angular/common/http';
+            import { Router } from '@angular/router';
+            import { environment } from '../../../environments/enviroment';
+            
+            
+            @Injectable({
+              providedIn: 'root'
+            })
+            export class LoginService {
+              http=inject(HttpClient);
+              router=inject(Router);
+            
+              headers = new HttpHeaders({
+                'Content-Type': 'application/json'
+              });
+            
+              apiUrl = environment.apiUrl;
+            
+              consult_get(url:string){
+                const route = this.apiUrl + url;
+                return this.http.get(route,{headers:this.headers});
+              }
+            
+              consult_post(url:string,data:any){
+                const route = this.apiUrl + url;
+                return this.http.post(route,data,{headers:this.headers});
+              }
+            
+              consult_put(url:string,data:any){
+                const route = this.apiUrl + url;
+                return this.http.put(route,data,{headers:this.headers});
+              }
+            
+              consult_delete(url:string){
+                const route = this.apiUrl + url;
+                return this.http.delete(route,{headers:this.headers});
+              }
+            
+            
+              constructor() { }
+            }
+            
+            
+            export class AuthServicesLogin{
+              
+              token = '';
+            
+              constructor(){}
+            
+              isAuth(){
+                return this.token.length > 0;
+              }
+            
+            
+            }
+                 
+</details>   
+
+
+<details>
+        <summary>Servicio almacenamiento de informacion</summary>
+
+                import { Injectable, inject } from '@angular/core';
+                import { HttpClient, HttpHeaders } from '@angular/common/http';
+                import { Router } from '@angular/router';
+                import { environment } from '../../../environments/enviroment';
+                
+                @Injectable({
+                  providedIn: 'root'
+                })
+                export class UsuarioDataService {
+                  http = inject(HttpClient);
+                  router = inject(Router);
+                
+                  private usuarioDataKey = 'usuarioData'; // Clave para localStorage
+                
+                  setUsuarioData(data: any) {
+                    localStorage.setItem(this.usuarioDataKey, JSON.stringify(data));
+                  }
+                
+                  getUsuarioData() {
+                    const data = localStorage.getItem(this.usuarioDataKey);
+                    return data ? JSON.parse(data) : null;
+                  }
+                
+                  clearUsuarioData() {
+                    localStorage.removeItem(this.usuarioDataKey);
+                  }
+                
+                  headers = new HttpHeaders({
+                    'Content-Type': 'application/json'
+                  });
+                
+                  apiUrl = environment.apiUrl;
+                
+                  consult_get(url: string) {
+                    const route = this.apiUrl + url;
+                    return this.http.get(route, { headers: this.headers });
+                  }
+                
+                  consult_post(url: string, data: any) {
+                    const route = this.apiUrl + url;
+                    return this.http.post(route, data, { headers: this.headers });
+                  }
+                
+                  constructor() { }
+                }
+
+     
+</details>   
+
+Y para poder acceder a todas los endpoint se creo un archivo donde se declara todas las rutas del proyecto.
+
+<details>
+        <summary>Rutas</summary>
+
+            import { Routes } from '@angular/router';
+            import { RegistroComponent } from './components/admin/registroUsuarios/registro.component';
+            import { RegistroAdminComponent } from './components/admin/registroAdmin/registro-admin.component';
+            import { RegistroViajesComponent } from './components/admin/registroViajes/registro-viajes.component';
+            import { RegistroAutosComponent } from './components/admin/registroAutos/registro-autos.component';
+            import { RegistroRecepcionistaComponent } from './components/admin/registroRecepcionista/registro-recepcionista.component';
+            import { InicioComponent } from './components/inicio/inicio.component';
+            import { LoginComponent } from './components/login/login.component';
+            import { DashboardComponent } from './components/admin/dashboard/dashboard.component';
+            import { DeleteUsuarioComponent } from './components/admin/deleteUsuario/delete-usuario.component';
+            import { UsuarioComponent } from './components/usuario/usuario.component';
+            
+            import { RecepcionistaComponent } from './components/recepcionista/recepcionista.component';
+            
+            import {ListasVehiculosComponent} from './components/listasVehiculos/listas-vehiculos.component';
+            import {ListasViajesComponent} from './components/listasViajes/listas-viajes.component';
+            
+            
+            export const routes: Routes = [
+                {
+                    path: 'admin/dashboard',
+                    component: DashboardComponent
+            
+                },
+                {
+                    path: 'admin/registro/usuario',
+                    component: RegistroComponent
+                },
+                {
+                    path: 'admin/registro/viaje',
+                    component: RegistroViajesComponent
+                },
+                {
+                    path: 'admin/registro/auto',
+                    component: RegistroAutosComponent
+                },
+                {
+                    path: 'admin/registro/recepcionista',
+                    component: RegistroRecepcionistaComponent
+                },
+                {
+                    path: 'inicio',
+                    component:InicioComponent
+                },
+                {
+                    path: 'admin/registro',
+                    component:RegistroAdminComponent
+                },
+                {
+                    path: 'admin/delete/usuario',
+                    component:DeleteUsuarioComponent
+                },
+                {
+                    path: 'login',
+                    component: LoginComponent
+                },
+                {
+                    path: 'dashboard/usuario',
+                    component: UsuarioComponent
+                },
+                {
+                    path: 'dashboard/recepcionista',
+                    component: RecepcionistaComponent
+                },
+                {
+                    path: 'usuario/misViajes',
+                    component: ListasViajesComponent
+                },
+                {
+                    path: 'usuario/misAutos',
+                    component: ListasVehiculosComponent
+                },
+                
+            ];
+
+     
+</details>   
+
+### Docker
+Para poder hacer el despligue del proyecto en la EC2 se utilizo docker para evitar errores en la vm si se sucitara un error en la aplicacion. Se utilizo un archivo docker en el directorio raiz de la aplicacion para poder iniciar el fronte y el backen con un solo comando.
+
+<details>
+        <summary>Docker</summary>
+
+            version: '3.1'
+            
+            services:
+            
+              mongo:
+                image: mongo
+                container_name: mongodb
+                restart: always
+                ports:
+                  - 27017:27017
+                environment:
+                  MONGO_INITDB_ROOT_USERNAME: root
+                  MONGO_INITDB_ROOT_PASSWORD: M1A2024.
+              api:
+                build: ./Backend
+                env_file:
+                  - ./.env
+                container_name: mia-api
+                restart: always
+                ports:
+                  - 3000:3000
+            
+              frontend:
+                build: ./Frontend
+                container_name: mia-frontend
+                restart: always
+                ports:
+                  - 80:80
+                depends_on:
+                  - api
+
+     
+</details>   
+
+<details>
+        <summary>Variables de entorno</summary>
+
+            PORT='3000'
+
+            
+            # CONFIGURACION DE MONGO
+            MONGO_USER='root'
+            MONGO_PASSWORD='M1A2024.'
+            MONGO_HOST='192.168.0.8'
+            MONGO_PORT='27017'
+            MONGO_DATABASE='BD1'
+        
+     
+</details>   
