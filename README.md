@@ -6,7 +6,7 @@
 - [Información](#Información)
 - [Manual de usuario](#Manual-de-usuario)
     - [Login](#Login)
-    - [Dashboard administrador](#DashBoard administrador)
+    - [Dashboard administrador](#DashBoard_administrador)
 - [Manual técnico](#Manual-técnico)
     - [Gramatica](#Gramatica)
     - [Herramientas utilizadas](#Herramientas-utilizadas)
