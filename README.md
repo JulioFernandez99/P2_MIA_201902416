@@ -198,225 +198,689 @@ Para el desarrolo de este, se utilizo nodejs y es aca donde se desarrolla la API
         BUCKET_NAME = 'bucket-jf'
         BUCKET_REGION = 'us-east-1'
         
+    </details>   
 
-</details>   
-
-## Gramatica
-
-Gramatica utilizada con atlr4 para la realización del analizador sintáctico.
+### Rutas
+Aca se declaran todos los endpoints de la API.
 
 <details>
-<summary>Gramtica</summary>
-    
-    init            : instrucciones
+        <summary>Enpoints administrador</summary>
 
-    instrucciones    : instrucciones instruccion
+             const {Router} = require('express');
+            const {check} = require('express-validator');
+            const dotenv = require('dotenv');
+            dotenv.config();
+            
+            const router = Router();
+            const adminController = require('../controllers/admin.controllers');
+            const validateAtributes = require('../middleware/validate.Atributes');
+            
+            router.get('/' , (req , res)=>{
+                res.json(
+                {
+                    status:true,
+                    message:"Welcome to the API of admin"
+                });
+            });
+            
+            router.post('/registro/usuario', [
+                check('path', 'El id es obligatorio').not().isEmpty(),
+                check('foto', 'El id es obligatorio').not().isEmpty(),
+                check('nombre', 'El id es obligatorio').not().isEmpty(),
+                check('usuario', 'El usuario es obligatorio').not().isEmpty(),
+                check('foto', 'La foto es obligatoria').not().isEmpty(),
+                check('email', 'El correo es obligatorio').not().isEmpty(),
+                check('password', 'La contraseña es obligatoria').not().isEmpty(),
+                check('conf_password', 'La confirmacion de la contraseña es obligatoria').not().isEmpty(),
+                validateAtributes
+            ], adminController.registro);
+            
+            router.post('/registro/viaje', [
+                check('nombreAgencia', 'El id es obligatorio').not().isEmpty(),
+                check('ciudadOrigen', 'El usuario es obligatorio').not().isEmpty(),
+                check('ciudadDestino', 'La foto es obligatoria').not().isEmpty(),
+                check('diasDeVuelo', 'El correo es obligatorio').not().isEmpty(),
+                check('precioDeVuelo', 'La contraseña es obligatoria').not().isEmpty(),
+                validateAtributes
+            ], adminController.registroViaje);
+            
+            router.post('/registro/auto', [
+                check('nombreAgencia', 'El id es obligatorio').not().isEmpty(),
+                check('marca', 'El usuario es obligatorio').not().isEmpty(),
+                check('placa', 'La foto es obligatoria').not().isEmpty(),
+                check('modelo', 'El correo es obligatorio').not().isEmpty(),
+                check('precio', 'La contraseña es obligatoria').not().isEmpty(),
+                check('ubicacion', 'La contraseña es obligatoria').not().isEmpty(),
+                validateAtributes
+            ], adminController.registroAutos);
+            
+            router.post('/registro/recepcionista', [
+                check('nombre', 'El id es obligatorio').not().isEmpty(),
+                check('usuario', 'El usuario es obligatorio').not().isEmpty(),
+                check('foto', 'La foto es obligatoria').not().isEmpty(),
+                check('correo', 'El correo es obligatorio').not().isEmpty(),
+                check('password', 'La contraseña es obligatoria').not().isEmpty(),
+                check('conf_password', 'La contraseña es obligatoria').not().isEmpty(),
+                validateAtributes
+            ], adminController.registroRecepcionistas);
+            
+            router.post('/registro/admin', [
+                check('nombre', 'El id es obligatorio').not().isEmpty(),
+                check('usuario', 'El usuario es obligatorio').not().isEmpty(),
+                check('foto', 'La foto es obligatoria').not().isEmpty(),
+                check('email', 'El email es obligatorio').not().isEmpty(),
+                check('password', 'La contraseña es obligatoria').not().isEmpty(),
+                check('conf_password', 'La contraseña es obligatoria').not().isEmpty(),
+                validateAtributes
+            ], adminController.registroAdmin);
+            
+            router.post('/deleteUsuario', [
+                check('usuario', 'El usuario es obligatorio').not().isEmpty(),
+                validateAtributes
+            ], adminController.deleteUsuario);
+            
+            router.post('/registro/viaje', [
+                check('nombreAgencia', 'El id es obligatorio').not().isEmpty(),
+                check('ciudadOrigen', 'El usuario es obligatorio').not().isEmpty(),
+                check('ciudadDestino', 'La foto es obligatoria').not().isEmpty(),
+                check('diasDeVuelo', 'El correo es obligatorio').not().isEmpty(),
+                check('precioDeVuelo', 'La contraseña es obligatoria').not().isEmpty(),
+                validateAtributes
+            ], adminController.registroViaje);
+            
+            
+            router.post('/viajes', adminController.viajes);
+            
+            router.post('/autos', adminController.autos);
+            
+            router.post('/asignar/viajes', adminController.appendViajes);
+            
+            router.post('/asignar/autos', adminController.appendAutos);
+            
+            router.post('/aceptar/viajes', adminController.confirmaViajes);
+            
+            router.post('/aceptar/autos', adminController.confirmarAutos);
+            
+            router.get('/getUsers', adminController.getUsers);
+            
+            module.exports = router;
+</details>  
+
+<details>
+        <summary>Endpoints login</summary>
     
-    instrucciones    : instruccion 
-    
-    instruccion      : imprimir PUNTOCOMA
-                            | declaracion PUNTOCOMA
-                            | asignacion PUNTOCOMA
-                            | if_instr 
-                            | if_else_instr 
-                            | if_elseif_instr 
-                            | if_elseif_else_instr
-                            | for_instr
-                            | while_instr
-                            | switch_instr
-                            | llamada_funcion_nativa PUNTOCOMA
-                            | funcion_instr  
-                            | call_funcion_instr PUNTOCOMA
-                            | interface_instr
-                            | delaracion_struct
-                            | return_instr
-                            | break_instr                        
-                                 
-    tipodeclaracion : LET
-                | VAR
-                | CONST
-    
-    lista_corchetes : lista_corchetes CORCHETEI CORCHETED 
-                    | CORCHETEI CORCHETED CORCHETEI CORCHETED'''
-     
-    tipovar : NUMBER
-                | FLOAT
-                | STRING
-                | BOOLEAN
-                | CHAR
-                | NUMBER CORCHETEI CORCHETED
-                | FLOAT CORCHETEI CORCHETED
-                | STRING CORCHETEI CORCHETED
-                | BOOLEAN CORCHETEI CORCHETED
-                | CHAR CORCHETEI CORCHETED
-    
-                | NUMBER lista_corchetes
-                | FLOAT lista_corchetes
-                | STRING lista_corchetes
-                | BOOLEAN lista_corchetes
-                | CHAR lista_corchetes
-    
-    listaExpresiones :  listaExpresiones COMA expresion
-                        | expresion
+            const {Router} = require('express');
+            const {check} = require('express-validator');
+            const dotenv = require('dotenv');
+            dotenv.config();
+            
+            
+            const router = Router();
+            const loginController = require('../controllers/login.controllers');
+            const loginValidates = require('../middleware/login.validates');
+            
+            router.post('/' , [
+                check('user', 'El user es obligatorio').not().isEmpty(),
+                check('password', 'La contraseña es obligatoria').not().isEmpty(),
+                loginValidates
+            ], loginController.login);
+            
+            module.exports = router;
+         
+</details>  
+
+
+### Controladores
+Aca se ubican todas las funciones que utilizara cada endpoint
+
+
+<details>
+        <summary>Controlador admin</summary>
+
+        
+            const {insertData} = require('../config/db.mongo');
+            const {getData} = require('../config/db.mongo');
+            const {getViajes} = require('../config/db.mongo');
+            const {eliminarUsuario} = require('../config/db.mongo');
+            const {insertViajes} = require('../config/db.mongo');
+            const {insertAutos} = require('../config/db.mongo');
+            const {appendToViajes} = require('../config/db.mongo');
+            const {appendToAutos} = require('../config/db.mongo');
+            const {getUsuarios} = require('../config/db.mongo');
+            const {aceptarViajes} = require('../config/db.mongo');
+            const {aceptarAutos} = require('../config/db.mongo');
+            const {uploadFile2} = require('../config/bucket');
+            
+            const {getAutos} = require('../config/db.mongo');
+            
+            const registro = async (req, res) => {
+                // se obtienen los datos del body
+                
+            
+                const { path,nombre, usuario ,foto,email ,password, conf_password } = req.body;
+                //al inicio del path agregar el nombre de usuario
+                pathnw=usuario+'-'+path;
+                await uploadFile2(pathnw, foto);
+                const ruta_aws = `https://bucket-jf.s3.amazonaws.com/${pathnw}`;
+                console.log('Ubicacion de la imagen: ', ruta_aws);
+                // un res.json de los datos que se reciben
+                if (password !== conf_password) {
+                    return res.json({
+                        status: false,
+                        message: 'Las contraseñas no coinciden',
+                    });
+                };
+            
+                const resultData=await getData('Usuarios',{usuario:usuario});
+                if(resultData instanceof Error){
+                    return res.json({
+                        status:false,
+                        error:"Error al obtener datos de la base de datos"
+                    });
+                }
+            
+                if (resultData!=null){
+                    return res.json({
+                        status:false,
+                        error:"El usuario ya existe"
+                    });
+                }
+            
+                // const saltRounds = 10;
+                // const hashedPassword = bcrypt.hashSync(password, saltRounds);
+                
+                const result = await insertData('Usuarios', 
+                    {   
+                        nombre,
+                        usuario,
+                        foto:ruta_aws,
+                        email,
+                        password:password,
+                        viajesComprados: [],
+                        autosComprados: [],
+                        viajesNoAprobados:[],
+                        autosNoAprobados:[],
+                        rol: 'usuario',
+                        viajesPendientes:false
+                    }
+                );
+                
+                if (result instanceof Error) {
+                    return res.json({
+                        status: false,
+                        message: 'Error al registrar usuario en la base de datos',
+                        data: {
+                            nombre: nombre,
+                            usuario: usuario,
+                            foto: foto,
+                            email: email,
+                            password: password,
+                            conf_password: conf_password
+                        }
+                    });
+                }
+            
+                return res.json({
+                    status: true,
+                    message: 'Usuario registrado correctamente en la base de datos',
+                    data: result
+                });
+            
+            };
+            
+            const registroViaje = async (req, res) => {
+                
+                const { nombreAgencia, ciudadOrigen, ciudadDestino, diasDeVuelo, precioDeVuelo} = req.body;
+                
+                const result = await insertViajes('Viajes',
+                    {
+                        nombreAgencia,
+                        ciudadOrigen,
+                        ciudadDestino,
+                        diasDeVuelo,
+                        precioDeVuelo,
+                        aprobado: false
+                    }
+                );
+            
+                if (result instanceof Error) {
+                    return res.json({
+                        status: false,
+                        message: 'Error al registrar el viaje en la base de datos',
+                        data: {
+                            nombreAgencia: nombreAgencia,
+                            ciudadOrigen: ciudadOrigen,
+                            ciudadDestino: ciudadDestino,
+                            diasDeVuelo: diasDeVuelo,
+                            precioDeVuelo: precioDeVuelo
+                        }
+                    });
+                }
+            
+                return res.json({
+                    status: true,
+                    message: 'Viaje registrado correctamente',
+                    data: result
+                });
+            };
+            
+            const registroAutos = async (req, res) => {
+                
+                const { nombreAgencia, marca, placa, modelo, precio, ubicacion} = req.body;
+                const result = await insertAutos('Autos',
+                    {
+                        nombreAgencia,
+                        marca,
+                        placa,
+                        modelo,
+                        precio,
+                        ubicacion
+                    }
+                );
+            
+                if (result instanceof Error) {
+                    return res.json({
+                        status: false,
+                        message: 'Error al registrar el auto en la base de datos',
+                        data: {
+                            nombreAgencia: nombreAgencia,
+                            marca: marca,
+                            placa: placa,
+                            modelo: modelo,
+                            precio: precio,
+                            ubicacion: ubicacion
+                        }
+                    });
+                }
+            
+                return res.json({
+                    status: true,
+                    message: 'Auto registrado correctamente',
+                    data: result
+                });
+            
+                
+            };
+            
+            const registroRecepcionistas = async (req, res) => {
+                
+                const { path,nombre, usuario, foto, correo, password, conf_password} = req.body;
+                pathnw=usuario+'-'+path;
+                await uploadFile2(pathnw, foto);
+                const ruta_aws = `https://bucket-jf.s3.amazonaws.com/${pathnw}`;
+                console.log('Ubicacion de la imagen: ', ruta_aws);
+                if (password !== conf_password) {
+                    return res.json({
+                        status: false,
+                        message: 'Las contraseñas no coinciden',
+                    });
+                };
+            
+                const resultData=await getData('Usuarios',{usuario:usuario});
+                if(resultData instanceof Error){
+                    return res.json({
+                        status:false,
+                        error:"Error al obtener datos de la base de datos"
+                    });
+                }
+            
+                if (resultData!=null){
+                    return res.json({
+                        status:false,
+                        error:"La recepcionista ya existe"
+                    });
+                }
+                
+                const result = await insertData('Usuarios', 
+                    {   
+                        nombre,
+                        usuario,
+                        foto:ruta_aws,
+                        correo,
+                        password,
+                        rol: 'recepcionista'
                         
-    arraylist : CORCHETEI listaExpresiones CORCHETED
-        
-    arraylist : CORCHETEI CORCHETED
-    
-    expresion : arraylist
-    
-    declaracion : tipodeclaracion ID DOSPUNTOS tipovar IGUAL expresion
-    
-    declaracion : tipodeclaracion ID IGUAL expresion
-    
-    declaracion : tipodeclaracion ID DOSPUNTOS tipovar
-        
-    asignacion : ID IGUAL expresion
-    
-    asignacion : ID CORCHETEI expresion CORCHETED IGUAL expresion
-    
-    asignacion : ID pos_matriz IGUAL expresion
-    
-    asignacion : ID AUMENTO expresion 
-                      | ID DECREMENTO expresion  
-    
-    listaIf :  listaIf elseIF
-                        | elseIF
+                    }
+                );
+                
+                if (result instanceof Error) {
+                    return res.json({
+                        status: false,
+                        message: 'Error al registrar la recepcionista en la base de datos',
+                        data: {
+                            nombre: nombre,
+                            usuario: usuario,
+                            foto: foto,
+                            email: email,
+                            password: password,
+                        }
+                    });
+                }
+            
+                return res.json({
+                    status: true,
+                    message: 'La recepcionista se registro correctamente en la base de datos',
+                    data: result
+                });
+            };
+            
+            const registroAdmin = async (req, res) => {
+                // se obtienen los datos del body
+                
+            
+                const { path,nombre, usuario ,foto,email ,password, conf_password } = req.body;
+                pathnw=usuario+'-'+path;
+                await uploadFile2(pathnw, foto);
+                const ruta_aws = `https://bucket-jf.s3.amazonaws.com/${pathnw}`;
+                console.log('Ubicacion de la imagen: ', ruta_aws);
+                // un res.json de los datos que se reciben
+                if (password !== conf_password) {
+                    return res.json({
+                        status: false,
+                        message: 'Las contraseñas no coinciden',
+                    });
+                };
+            
+                const resultData=await getData('Usuarios',{usuario:usuario});
+                if(resultData instanceof Error){
+                    return res.json({
+                        status:false,
+                        error:"Error al obtener datos de la base de datos"
+                    });
+                }
+            
+                if (resultData!=null){
+                    return res.json({
+                        status:false,
+                        error:"El usuario ya existe"
+                    });
+                }
+            
+                // const saltRounds = 10;
+                // const hashedPassword = bcrypt.hashSync(password, saltRounds);
+                
+                const result = await insertData('Usuarios', 
+                    {   
+                        nombre,
+                        usuario,
+                        foto:ruta_aws,
+                        email,
+                        password:password,
+                        viajesComprados: [],
+                        autosAlquilados: [],
+                        rol: 'admin'
+                    }
+                );
+                
+                if (result instanceof Error) {
+                    return res.json({
+                        status: false,
+                        message: 'Error al registrar usuario en la base de datos',
+                        data: {
+                            nombre: nombre,
+                            usuario: usuario,
+                            foto: foto,
+                            email: email,
+                            password: password,
+                            conf_password: conf_password
+                        }
+                    });
+                }
+            
+                
+                return res.json({
+                    status: true,
+                    message: 'Usuario registrado correctamente en la base de datos',
+                    data: result
+                });
+            
+            };
+            
+            
+            const deleteUsuario = async (req, res) => {
+                const { usuario } = req.body;
+            
+               
+            
+            
+                const resultData=await getData('Usuarios',{usuario:usuario});
+                if(resultData instanceof Error){
+                    return res.json({
+                        status:false,
+                        error:"Error al obtener datos de la base de datos"
+                    });
+                }
+            
+                if (resultData==null){
+                    return res.json({
+                        status:false,
+                        error:"El usuario no existe"
+                    });
+                }
+            
+                const result = await eliminarUsuario('Usuarios', { usuario: usuario });
+                if (result instanceof Error) {
+                    return res.json({
+                        status: false,
+                        message: 'Error al eliminar usuario en la base de datos',
+                        data: {
+                            usuario: usuario
+                        }
+                    });
+                }
+            
+                return res.json({
+                    status: true,
+                    message: 'Usuario eliminado correctamente en la base de datos',
+                    data: result
+                });
+            }
+            
+            const viajes = async (req, res) => {
+                const result = await getViajes('Viajes');
+                if (result instanceof Error) {
+                    return res.json({
+                        status: false,
+                        message: 'Error al obtener los viajes de la base de datos',
+                    });
+                }
+            
+                return res.json({
+                    status: true,
+                    message: 'Viajes obtenidos correctamente',
+                    viajes: result
+                });
+            
+            
+            }
+            
+            const autos = async (req, res) => {
+            
+                const result = await getAutos('Autos');
+                if (result instanceof Error) {
+                    return res.json({
+                        status: false,
+                        message: 'Error al obtener los autos de la base de datos',
+                    });
+                }
+            
+                return res.json({
+                    status: true,
+                    message: 'Autos obtenidos correctamente',
+                    autos: result
+                });
+            
+            }
+            
+            
+            const appendViajes = async (req, res) => {
+                const { usuario, viajes } = req.body;
+                const result = await appendToViajes(usuario, viajes);
+                if (result instanceof Error) {
+                    return res.json({
+                        status: false,
+                        message: 'Error al agregar el viaje al usuario en la base de datos',
+                    });
+                }
+            
+                return res.json({
+                    status: true,
+                    message: 'Viaje agregado correctamente al usuario'
+                });
+            };
+              
+            const appendAutos = async (req, res) => {
+                
+                const { usuario, autos } = req.body;
+                
+                const result = await appendToAutos(usuario, autos);
+                if (result instanceof Error) {
+                    return res.json({
+                        status: false,
+                        message: 'Error al agregar el auto al usuario en la base de datos',
+                    });
+                }
+                
+                return res.json({
+                    status: true,
+                    message: 'Auto agregado correctamente al usuario'
+                });
+            };
+            
+            const getUsers = async (req, res) => {
+                const result = await getUsuarios('Usuarios');
+                if (result instanceof Error) {
+                    return res.json({
+                        status: false,
+                        message: 'Error al obtener los usuarios de la base de datos',
+                    });
+                }
+            
+                return res.json({
+                    status: true,
+                    message: 'Usuarios obtenidos correctamente',
+                    usuarios: result
+                });
+            
+            }
+            
+            const confirmaViajes = async (req, res) => {
+                const { usuarios } = req.body;
+                console.log("Array de usuarios ----->", usuarios);
+                const result = await aceptarViajes(usuarios);
+                if (result instanceof Error) {
+                    return res.json({
+                        status: false,
+                        message: 'Error al aceptar los viajes del usuario',
+                    });
+                }
+            
+                return res.json({
+                    status: true,
+                    message: 'Viajes aceptados correctamente',
+                    usuarios: result
+                });
+            
+            }
+            
+            
+            confirmarAutos = async (req, res) => {
+                const { usuarios } = req.body;
+                console.log("Array de usuarios ----->", usuarios);
+                const result = await aceptarAutos(usuarios);
+                if (result instanceof Error) {
+                    return res.json({
+                        status: false,
+                        message: 'Error al aceptar los autos del usuario',
+                    });
+                }
+            
+                return res.json({
+                    status: true,
+                    message: 'Autos aceptados correctamente',
+                    usuarios: result
+                });
+            
+            }
+            
+            module.exports = {
+                registro,
+                registroViaje,
+                registroAutos,
+                registroRecepcionistas,
+                registroAdmin,
+                deleteUsuario,
+                viajes,
+                appendViajes,
+                getUsers,
+                confirmaViajes,
+                autos,
+                appendAutos,
+                confirmarAutos
+            };
      
-    elseIF : ELSE if_instr
-        
-    if_instr           : IF PARENI expresion PAREND LLAVEI instrucciones LLAVED
-    
-    if_else_instr      : IF PARENI expresion PAREND LLAVEI instrucciones LLAVED ELSE LLAVEI instrucciones LLAVED
+</details>   
+
+
+<details>
+        <summary>Controlador usuario</summary>
+
+                    
+            const {getData} = require('../config/db.mongo');
+            const bcrypt = require('bcrypt');
+            
+            const login=async(req,res)=>{
+                const {user,password}=req.body;
+                
+                //obtener datos de la base de datos
+                const result=await getData('Usuarios',{usuario:user});
+                if(result instanceof Error){
+                    return res.json({
+                        status:false,
+                        error:"Error al obtener datos de la base de datos"
+                    });
+                }
+            
+                //Verificar si el usuario existe
+                if(result==null){
+                    return res.json({
+                        status:false,
+                        error:"No hay ningún usuario con este nombre de usuario"
+                    });
+                }
+            
+                //Verificar si la contraseña es correcta
+                 //Verificar si la contraseña es correcta
+                 if(result.password!=password){
+                    return res.json({
+                        status:false,
+                        error:"La contraseña es incorrecta"
+                    });
+                }
+            
+                //Si todo es correcto
+                return res.json({
+                    status:true,
+                    data:result
+                });
+            
+            
+                
+            
+            
+            
+            };
+            
+            
+            
+            
+            module.exports={
+                login
+            };
      
-    if_elseif_instr   : IF PARENI expresion PAREND LLAVEI instrucciones LLAVED listaIf
-     
-    if_elseif_else_instr   : IF PARENI expresion PAREND LLAVEI instrucciones LLAVED listaIf ELSE LLAVEI instrucciones LLAVED
-    
-    actualizacion        : ID INCREMENTOFOR
-    
-    actualizacion        : ID DECREMENTOFOR     
-    
-    for_instr        : FOR PARENI declaracion PUNTOCOMA expresion PUNTOCOMA actualizacion PAREND LLAVEI instrucciones LLAVED
-    
-    for_instr        : FOR PARENI tipodeclaracion ID OF ID PAREND LLAVEI instrucciones LLAVED
-    
-    while_instr        : WHILE PARENI expresion PAREND LLAVEI instrucciones LLAVED
-    
-    listaCases : listaCases case
-                        | case
-    
-    case : CASE expresion DOSPUNTOS instrucciones
-        
-    case : DEFAULT DOSPUNTOS instrucciones
-    
-    switch_instr        : SWITCH PARENI expresion PAREND LLAVEI listaCases LLAVED
-    
-    nativa_sin_parametros :     POP PARENI PAREND
-                                      | JOIN PARENI PAREND
-                                      | TSTRING PARENI PAREND
-                                      | LC PARENI PAREND
-                                      | UC PARENI PAREND
-                                      | LENGTH
-                                      
-    llamada_funcion_nativa :    PUSH
-                              | INDEXOF
-    
-    llamada_funcion_nativa :    expresion PUNTO nativa_sin_parametros
-    
-    llamada_funcion_nativa :    expresion PUNTO llamada_funcion_nativa PARENI listaExpresiones PAREND
-    
-    llamada_funcion_nativa :    TYPEOF expresion
-    
-    expresion : llamada_funcion_nativa
-    
-    expresion : TOINT PARENI expresion PAREND
-    
-    expresion : TOFLOAT PARENI expresion PAREND
-        
-    parametros_funcion : parametros_funcion COMA parametro_funcion
-                        | parametro_funcion
-    
-    parametro_funcion : ID DOSPUNTOS tipovar
-    
-    parametro_funcion : ID DOSPUNTOS tipovar CORCHETEI  CORCHETED
-    
-    call_funcion_instr      : ID PARENI PAREND
-        
-    call_funcion_instr      : ID PARENI listaExpresiones PAREND
-    
-    funcion_instr      : FUNCTION ID PARENI parametros_funcion  PAREND LLAVEI instrucciones LLAVED
-    
-    
-    funcion_instr      : FUNCTION ID PARENI PAREND LLAVEI instrucciones LLAVED
-    
-    interface_instr : INTERFACE ID LLAVEI interface_params PUNTOCOMA LLAVED
-    
-    interface_params : interface_params PUNTOCOMA ID DOSPUNTOS tipovar
-                            | ID DOSPUNTOS tipovar
-    
-    delaracion_struct : expresion PUNTO expresion IGUAL expresion PUNTOCOMA
-        
-    expresion : expresion PUNTO expresion
-        
-    return_instr     : RETURN expresion PUNTOCOMA
-                            | RETURN PUNTOCOMA
-    
-    break_instr     : BREAK PUNTOCOMA
-    
-    expresion : call_funcion_instr
-    
-    expresion : expresion MAS expresion
-                      | expresion MENOS expresion
-                      | expresion POR expresion
-                      | expresion DIVIDIDO expresion
-                      | expresion MOD expresion
-        
-    expresion : expresion MENORQ expresion
-                      | expresion MAYORQ expresion
-                      | expresion MAYORIGUALQ expresion
-                      | expresion MENORIGUALQ expresion
-                      | expresion IGUALIGUAL expresion
-                      | expresion DIFERENTE expresion            
-    
-    expresion : expresion AND expresion
-                      | expresion OR expresion
-                      | NOT expresion
-    
-    expresion : PARENI expresion PAREND
-    
-    expresion    : ENTERO
-        
-    expresion    : DECIMAL
-        
-    expresion : FALSE
-    
-    expresion : TRUE
-    
-    expresion    : CADENA
-    
-    expresion    : CARACTER
-    
-    expresion    : ID
-    
-    expresion    : VACIO
-    
-    pos_matriz : pos_matriz CORCHETEI expresion CORCHETED
-                        | CORCHETEI expresion CORCHETED CORCHETEI expresion CORCHETED
-    
-    expresion : ID pos_matriz
-    
-    expresion : ID CORCHETEI expresion CORCHETED
-    
-    expresion : MENOS expresion %prec UMENOS'
-        t[0] = ExpresionNegativo(t[2])
-        
+</details>   
 
 
-</details>
 
-## Herramientas utilizadas
 
-- Python
-- TKinter
-- PLY
+
